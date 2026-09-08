@@ -1,0 +1,45 @@
+
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicLight.eot');
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicLight.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicLight.woff2') format('woff2'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicLight.woff') format('woff'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicLight.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicRegular.eot');
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicRegular.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicRegular.woff2') format('woff2'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicRegular.woff') format('woff'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicRegular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicMedium.eot');
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicMedium.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicMedium.woff2') format('woff2'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicMedium.woff') format('woff'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicMedium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicBold.eot');
+	src: url('../fonts/subset/nexonv2/NEXONLv2GothicBold.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicBold.woff2') format('woff2'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicBold.woff') format('woff'),
+	url('../fonts/subset/nexonv2/NEXONLv2GothicBold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
