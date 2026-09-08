@@ -28,6 +28,18 @@ export interface BoardData {
   items: GalleryItem[];
 }
 
+// 구글 드라이브 공유 링크를 이미지 직링크로 자동 변환
+// 지원: drive.google.com/file/d/ID/view..., drive.google.com/open?id=ID
+function normalizeImageUrl(url: string): string {
+  const m =
+    url.match(/drive\.google\.com\/file\/d\/([\w-]+)/) ||
+    url.match(/drive\.google\.com\/(?:open|uc)\?[^#]*id=([\w-]+)/);
+  if (m) {
+    return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200`;
+  }
+  return url;
+}
+
 function sheetConfigured(): boolean {
   return Boolean(
     spreadsheetId && spreadsheetId !== "YOUR_GOOGLE_SHEET_ID_HERE" && clientEmail && privateKey
@@ -89,7 +101,7 @@ export async function getBoardData(slug: string): Promise<BoardData> {
       })
       .map((r) => ({
         studentId: (r[0] || "").trim(),
-        imageUrl: (r[1] || "").trim(),
+        imageUrl: normalizeImageUrl((r[1] || "").trim()),
         linkUrl: (r[2] || "").trim(),
         title: (r[3] || "").trim(),
         date: (r[4] || "").trim(),
