@@ -59,7 +59,7 @@ export default function UserBoardPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<BoardResponse | null>(null);
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(25);
 
   // 새로고침 시 세션 유지
   useEffect(() => {
@@ -218,7 +218,7 @@ export default function UserBoardPage() {
                   className="btn-primary more_btn"
                   onClick={(e) => {
                     e.preventDefault();
-                    setVisibleCount((c) => c + 8);
+                    setVisibleCount((c) => c + 25);
                   }}
                 >
                   More

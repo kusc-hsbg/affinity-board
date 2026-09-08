@@ -239,7 +239,7 @@ b {
 /* 갤러리 (원본 grid_01 type_grid overlay_text hover_show_overlay) */
 .gallery2 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: 46px;
 }
