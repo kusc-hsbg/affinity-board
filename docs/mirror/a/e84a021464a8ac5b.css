@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/mirror/a/0c05ebb43188dcf6.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/mirror/a/409b27f0243b7a18.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/mirror/a/ad3dbcc53a5ddb2e.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/mirror/a/c9c3879c158e0daf.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/mirror/a/00a0a46fed25951c.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(/mirror/a/6f4edf40d9d05461.ttf) format('truetype');
+}
