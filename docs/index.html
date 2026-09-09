@@ -10424,6 +10424,12 @@ div[doz_type="section"] main { padding: 40px 0 0; }
     showPopups();
     var openIdx = new URLSearchParams(location.search).get("post");
     if (openIdx) openPost(openIdx);
+    if (new URLSearchParams(location.search).get("clicktest")) {
+      setTimeout(function () {
+        var a = document.querySelector("a.post_link_wrap");
+        if (a) a.click();
+      }, 2000);
+    }
   }
 
   function attempt(pw, silent) {

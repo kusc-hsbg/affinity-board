@@ -32,3 +32,6 @@ next-env.d.ts
 # credentials
 *.json
 !package.json
+!tsconfig.json
+!public/mirror/posts.json
+!docs/mirror/posts.json
