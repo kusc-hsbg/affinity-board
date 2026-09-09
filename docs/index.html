@@ -7669,8 +7669,24 @@ padding-top: 0 !important;
     transform: translate(-50%, -50%) !important; width: min(500px, 92vw) !important; }
 }
 
+@media (min-width: 992px) {
+  .pop-container { position: absolute !important; left: 50% !important; top: 845px !important; margin-left: -250px !important; transform: none !important; }
+}
+
+#s202506083266cc47381e0 main { padding-bottom: 75px; }
+
+/* ── 푸터 세로 거터: 원본 실측 보정 ── */
+#doz_footer .doz_row { margin-bottom: 6px; }
+#doz_footer main { padding-top: 9px; padding-bottom: 16px; }
+
+/* ── PC 히어로 세로 간격: 원본 실측 보정 ── */
+@media (min-width: 768px) {
+  #s202506083266cc47381e0 .widget.icon { margin-top: 44px; }
+  #s202506083266cc47381e0 ._widget_data[data-widget-type="gallery2"] { margin-top: 100px; }
+}
+
 /* ── 비공개 게이트: 원본 computed 스타일 ── */
-.menu_password { padding: 40px 0 60px; }
+.menu_password { padding: 36px 0 60px; }
 .menu_password .body_font_color_30 { color: rgba(0,0,0,.3); }
 .menu_password p { margin: 0; }
 .menu_password p i.btl { font-size: 128px; color: rgba(0,0,0,.3); }
@@ -7693,9 +7709,9 @@ body { overflow: auto !important; }
 .doz_row { display: flex; flex-wrap: wrap; width: 100%; }
 .doz_row > [class*="col-dz"] { width: 100%; min-height: 1px; }
 div[doz_type="section"] main .inside, .section_wrap .inside { max-width: 1320px; margin: 0 auto; }
-div[doz_type="section"] main .inside { padding: 0 30px; }
+div[doz_type="section"] main .inside { padding: 0 20px; }
 div[doz_type="section"] { color: #000; }
-div[doz_type="section"] main { padding: 40px 0 0; }
+div[doz_type="section"] main { padding: 36px 0 0; }
 
 @media (min-width: 768px) {
   .doz_row > .col-dz-1 { width: 8.3333%; }
@@ -7729,14 +7745,14 @@ div[doz_type="section"] main { padding: 40px 0 0; }
 }
 
 /* 갤러리 (원본 grid_01 5열) */
-.gallery2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-bottom: 20px; }
-.gallery2 ._item { position: relative; overflow: hidden; border: 1px solid #eee; }
-.gallery2 .img_wrap { height: 0; padding-bottom: 100%; background-size: cover; background-position: center; }
+.gallery2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; padding-bottom: 20px; }
+.gallery2 ._item { position: relative; overflow: hidden; border: 0; padding: 5px; }
+.gallery2 .img_wrap { height: 0; padding-bottom: 141%; background-size: cover; background-position: center; }
 .gallery2 .slide_overlay { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,0); transition: background .25s; }
 .gallery2 ._item:hover .slide_overlay { background: rgba(0,0,0,.3); }
 @media (max-width: 767px) { .gallery2 { grid-template-columns: repeat(2, 1fr); } }
 .text-center { text-align: center; }
-._more_btn { display: inline-block; background: #3247e9; color: #fff; font-size: 11px; letter-spacing: 1px; padding: 8px 24px; border-radius: 2px; border: 0; }
+._more_btn { display: inline-block; background: #0063ff; color: #fff; font-size: 12px; letter-spacing: 1px; padding: 10px 20px; border-radius: 2px; border: 0; }
 
 /* ── 수업현황 게시판 카드 (imweb board grid_03) ── */
 .widget.board .list-style { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; padding: 10px 0 20px; }
@@ -7766,6 +7782,8 @@ div[doz_type="section"] main { padding: 40px 0 0; }
 
 /* 텍스트 위젯 기본 */
 .widget_text_wrap h6 { font-size: 16px; line-height: 1.5; margin: 0; }
+#s202506083266cc47381e0 .widget_text_wrap, #s202506083266cc47381e0 .widget.icon { padding-left: 5px !important; padding-right: 5px !important; }
+#s202506083266cc47381e0 .widget_text_wrap h6 { line-height: 1.65; }
 .widget_text_wrap p { margin: 0 0 10px; line-height: 1.6; }
 .widget.icon a { display: inline-block; }
 
