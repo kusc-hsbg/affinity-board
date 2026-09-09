@@ -7657,6 +7657,18 @@ padding-top: 0 !important;
 #s20250621c0a3cacfac54b, #s2025062107d39a04397f2 { display: none !important; }
 </style>
 <style>
+/* ── 모바일 보정: 헤더 높이 붕괴/팝업 치우침/햄버거 이중 표시 ── */
+@media (max-width: 767px) { header#doz_header_wrap #doz_header, header#doz_header_wrap .new_org_header, header#doz_header_wrap #inline_header_mobile { position: static !important; } }
+@media (max-width: 767px) {
+  header#doz_header_wrap .icon_type_menu a { width: auto; height: auto; border: 0 !important; }
+  header#doz_header_wrap .icon_type_menu a:before { content: none !important; }
+  header#doz_header_wrap .icon_type_menu a .holder { display: inline-block; font-size: 22px; color: #000; }
+}
+@media (max-width: 991px) {
+  .pop-container { left: 50% !important; top: 50% !important; margin-left: 0 !important;
+    transform: translate(-50%, -50%) !important; width: min(500px, 92vw) !important; }
+}
+
 /* ── 비공개 게이트: 원본 computed 스타일 ── */
 .menu_password { padding: 40px 0 60px; }
 .menu_password .body_font_color_30 { color: rgba(0,0,0,.3); }
