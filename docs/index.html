@@ -10287,6 +10287,19 @@ div[doz_type="section"] main { padding: 40px 0 0; }
 /* 알림/모달류 숨김 */
 #site_alarm_wrap, .site_alarm, [id^="site_alarm"] { display: none !important; }
 
+/* ── 게시글 상세 모달 ─────────────────── */
+#_post_modal { display: none; position: fixed; inset: 0; z-index: 2000; }
+#_post_modal .pm-bg { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+#_post_modal .pm-box { position: relative; max-width: 860px; margin: 5vh auto; background: #fff; border-radius: 6px; max-height: 90vh; overflow-y: auto; padding: 40px 48px 48px; }
+@media (max-width: 767px) { #_post_modal .pm-box { margin: 3vh 12px; padding: 24px 18px 32px; } }
+#_post_modal .pm-close { position: sticky; top: 0; float: right; font-size: 26px; line-height: 1; cursor: pointer; color: #666; background: #fff; border: 0; padding: 4px 8px; }
+#_post_modal .pm-cat { color: #000; font-size: 14px; font-family: "Pretendard-Bold", sans-serif; margin-right: 10px; }
+#_post_modal .pm-title { font-size: 22px; line-height: 1.4; font-family: "Pretendard-Bold", sans-serif; margin: 6px 0 8px; word-break: keep-all; }
+#_post_modal .pm-meta { font-size: 12px; color: #999; border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 20px; }
+#_post_modal .pm-body { font-size: 15px; line-height: 1.8; color: #111; }
+#_post_modal .pm-body img { max-width: 100%; height: auto; }
+#_post_modal .pm-body hr { border: 0; border-top: 1px solid #e5e5e5; margin: 24px 0; }
+
 /* ── 공지 팝업 ───────────────────────── */
 .popup-banner-wrap { display: none; }
 .pop-container { position: fixed; }
@@ -10352,6 +10365,45 @@ div[doz_type="section"] main { padding: 40px 0 0; }
 
   function esc(t) { var d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
 
+  // 게시글 상세 모달
+  var postsCache = null;
+  function openPost(idx) {
+    var show = function (posts) {
+      var p = posts[idx];
+      if (!p) return;
+      var modal = document.getElementById("_post_modal");
+      if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "_post_modal";
+        modal.innerHTML = '<div class="pm-bg"></div><div class="pm-box">' +
+          '<button class="pm-close" aria-label="close">&times;</button>' +
+          '<div><span class="pm-cat"></span></div><div class="pm-title"></div>' +
+          '<div class="pm-meta"></div><div class="pm-body"></div></div>';
+        document.body.appendChild(modal);
+        modal.querySelector(".pm-bg").addEventListener("click", function () { modal.style.display = "none"; });
+        modal.querySelector(".pm-close").addEventListener("click", function () { modal.style.display = "none"; });
+      }
+      modal.querySelector(".pm-cat").textContent = p.category || "";
+      modal.querySelector(".pm-title").textContent = p.title || "";
+      modal.querySelector(".pm-meta").textContent = "Affinity Universe · " + (p.date || "");
+      modal.querySelector(".pm-body").innerHTML = p.body || "";
+      modal.style.display = "block";
+      modal.querySelector(".pm-box").scrollTop = 0;
+    };
+    if (postsCache) { show(postsCache); return; }
+    fetch("mirror/posts.json").then(function (r) { return r.json(); }).then(function (j) {
+      postsCache = j; show(j);
+    }).catch(function () {});
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a.post_link_wrap") : null;
+    if (!a) return;
+    var m = (a.getAttribute("href") || "").match(/idx=(\d+)/);
+    if (!m) return;
+    e.preventDefault();
+    openPost(m[1]);
+  });
+
   function renderGallery(items) {
     var htmlStr = items.map(function (it) {
       return '<div class="_item item_gallary" style="position:relative;">' +
@@ -10370,6 +10422,8 @@ div[doz_type="section"] main { padding: 40px 0 0; }
     if (gateCss) gateCss.remove();
     if (data && data.items && data.items.length) renderGallery(data.items);
     showPopups();
+    var openIdx = new URLSearchParams(location.search).get("post");
+    if (openIdx) openPost(openIdx);
   }
 
   function attempt(pw, silent) {
