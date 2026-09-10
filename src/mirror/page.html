@@ -9347,10 +9347,7 @@ body > .section_wrap { display: none !important; }
 	</div>
 	
 </div></div></div></div><div doz_type="row" doz_xdz="12" class="doz_row  col-xdz col-xdz-12"><div doz_type="grid" doz_xdz="3" class="col-dz col-dz-  col-xdz col-xdz-3"><div doz_type="widget" id="w20240715d192c5b36d754"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="Y"><div class="widget icon  no_bg" style="text-align: center">
-	<a class="inline-blocked _fade_link " href="https://www.instagram.com/affinity_universe">	<span class=" animated wg_animated inline-blocked">
-		<i aria-hidden="true" class="ii ii-instagram-rn  vertical-middle" style="color: #000;font-size: 48px;padding: 0px;background-color: #e7e7e7;border-radius: 100px;border-width: 0px;border-style: solid;display: inline-table;border-color: ; border-radius: 0;; background-color: transparent;"></i>
-	</span>
-	<span class="sr-only">icon</span></a></div>
+</div>
 </div></div></div><div doz_type="grid" doz_xdz="3" class="col-dz col-dz-  col-xdz col-xdz-3"><div doz_type="widget" id="w20240715d05a488c083d1"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="Y"><div class="widget icon  no_bg" style="text-align: center">
 	<a class="inline-blocked _fade_link " href="https://blog.naver.com/affinityuniverse">	<span class=" animated wg_animated inline-blocked">
 		<i aria-hidden="true" class="ii ii-nblog-rn  vertical-middle" style="color: #0cb754;font-size: 48px;padding: 0px;background-color: #e7e7e7;border-radius: 100px;border-width: 0px;border-style: solid;display: inline-table;border-color: ; border-radius: 0;; background-color: transparent;"></i>
@@ -9581,7 +9578,6 @@ body > .section_wrap { display: none !important; }
                                 <p style="text-align: center;"><span style="color: rgb(255, 255, 255);"><br></span></p>
                                 <h4 style="text-align: center;"><span style="color: rgb(255, 255, 255);">Follow
                                         Us</span></h4>
-                                <p style="text-align: center; line-height: 1.5;"><span style="color: #b8d3ff;"><a href="https://www.instagram.com/affinity_universe"><span style="font-size: 14px;">Instagram</span></a></span></p>
                                 <p style="text-align: center; line-height: 1.5;"><span style="color: #b8d3ff;"><a href="https://www.youtube.com/@affinityuniverse"><span style="font-size: 14px;">YouTube</span></a></span></p>
                                 <p style="text-align: center; line-height: 1.5;"><br></p>
                                 <p><br></p>
@@ -9636,10 +9632,7 @@ body > .section_wrap { display: none !important; }
 	</div>
 	
 </div></div></div></div><div doz_type="row" doz_grid="12" class="doz_row"><div doz_type="grid" doz_grid="1" doz_clear="Y" class="col-dz col-dz-1   col-xdz-clear"><div doz_type="widget" id="w2025060836ba27ec7b0b2"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="N"><div class="widget icon  no_bg" style="text-align: center">
-	<a class="inline-blocked _fade_link " href="https://www.instagram.com/affinity_universe/?hl=ko">	<span class="animated wg_animated inline-blocked" style="visibility: hidden; animation-duration: 0.7s; animation-delay: 0s;">
-		<i aria-hidden="true" class="ii ii-instagram-rn  vertical-middle" style="color: #000;font-size: 60px;padding: 0px;background-color: #e7e7e7;border-radius: 100px;border-width: 0px;border-style: solid;display: inline-table;border-color: ; border-radius: 0;; background-color: transparent;"></i>
-	</span>
-	<span class="sr-only">icon</span></a></div>
+</div>
 </div></div></div><div doz_type="grid" doz_grid="1" doz_clear="Y" class="col-dz col-dz-1   col-xdz-clear"><div doz_type="widget" id="w202506084a30d979ec2d9"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="N"><div class="widget icon  no_bg" style="text-align: center">
 	<a class="inline-blocked _fade_link " href="https://blog.naver.com/affinityuniverse">	<span class="animated wg_animated inline-blocked" style="visibility: hidden; animation-duration: 0.7s; animation-delay: 0s;">
 		<i aria-hidden="true" class="ii ii-nblog-rn  vertical-middle" style="color: #0cb754;font-size: 60px;padding: 0px;background-color: #e7e7e7;border-radius: 100px;border-width: 0px;border-style: solid;display: inline-table;border-color: ; border-radius: 0;; background-color: transparent;"></i>
@@ -10213,25 +10206,28 @@ body > .section_wrap { display: none !important; }
     if (openIdx) openPost(openIdx);
   }
 
+  var attemptInFlight = false;
   function attempt(pw, silent) {
+    if (attemptInFlight) return Promise.resolve();
+    attemptInFlight = true;
     return fetch("/api/board", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slug: slug, password: pw }),
     }).then(function (r) { return r.json(); }).then(function (j) {
-      if (j.ok) { sessionStorage.setItem("pw:" + slug, pw); unlock(j); }
+      if (j.ok) { localStorage.setItem("pw:" + slug, pw); unlock(j); }
       else {
-        sessionStorage.removeItem("pw:" + slug);
+        localStorage.removeItem("pw:" + slug);
         if (!silent) alert(j.message || "비밀번호가 일치하지 않습니다.");
       }
     }).catch(function () {
       if (pw === slug.replace("user_", "") && pw.length > 0) {
-        sessionStorage.setItem("pw:" + slug, pw);
+        localStorage.setItem("pw:" + slug, pw);
         unlock(null);
       } else if (!silent) {
         alert("비밀번호가 일치하지 않습니다.");
       }
-    });
+    }).then(function () { attemptInFlight = false; });
   }
 
   var form = document.getElementById("menu_password_form");
@@ -10251,7 +10247,7 @@ body > .section_wrap { display: none !important; }
   });
 
   var qpw = new URLSearchParams(location.search).get("pw");
-  var savedPw = qpw || sessionStorage.getItem("pw:" + slug);
+  var savedPw = qpw || localStorage.getItem("pw:" + slug);
   if (savedPw) attempt(savedPw, true);
 })();
 </script>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, getBoardData } from "@/lib/sheets";
+import { verifyStudent, getBoardData } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 

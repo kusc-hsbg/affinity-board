@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "clsx": "latest",
+    "googleapis": "latest",
+    "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "googleapis": "latest",
-    "lucide-react": "latest",
-    "clsx": "latest",
     "tailwind-merge": "latest"
   },
   "devDependencies": {
