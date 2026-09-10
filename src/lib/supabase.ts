@@ -9,6 +9,7 @@ const supabase =
   supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 export interface GalleryItem {
+  id: number;
   studentId: string;
   imageUrl: string;
   linkUrl: string;
@@ -89,7 +90,7 @@ export async function getBoardData(slug: string): Promise<BoardData> {
     supabase!.from("students").select("name").eq("slug", slug).maybeSingle(),
     supabase!
       .from("gallery")
-      .select("student_id, image_url, link_url, title, date, visible")
+      .select("id, student_id, image_url, link_url, title, date, visible")
       .or(`student_id.is.null,student_id.eq.,student_id.eq.${slug}`)
       .order("created_at", { ascending: false }),
     supabase!.from("settings").select("key, value"),
@@ -123,6 +124,7 @@ export async function getBoardData(slug: string): Promise<BoardData> {
     data.items = galleryRes.data
       .filter((r) => r.visible !== false && (r.image_url ?? "").trim() !== "")
       .map((r) => ({
+        id: r.id,
         studentId: (r.student_id ?? "").trim(),
         imageUrl: normalizeImageUrl((r.image_url ?? "").trim()),
         linkUrl: (r.link_url ?? "").trim(),
@@ -177,6 +179,35 @@ export async function addGalleryItem(item: {
   return { ok: true };
 }
 
+// 갤러리 항목 삭제 (스토리지 파일도 정리)
+export async function deleteGalleryItem(id: number): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const { data } = await supabase.from("gallery").select("image_url").eq("id", id).maybeSingle();
+  const { error } = await supabase.from("gallery").delete().eq("id", id);
+  if (error) return { ok: false, message: error.message };
+  if (data?.image_url) await deleteStorageByUrls([data.image_url]);
+  return { ok: true };
+}
+
+// Storage 공개 URL에서 gallery 버킷 경로만 뽑아 삭제 (best-effort)
+export async function deleteStorageByUrls(urls: string[]): Promise<void> {
+  if (!supabase) return;
+  const marker = "/storage/v1/object/public/gallery/";
+  const paths = urls
+    .map((u) => {
+      const i = u.indexOf(marker);
+      return i >= 0 ? decodeURIComponent(u.slice(i + marker.length).split("?")[0]) : "";
+    })
+    .filter(Boolean);
+  if (paths.length) {
+    try {
+      await supabase.storage.from("gallery").remove(paths);
+    } catch (e) {
+      console.error("스토리지 삭제 실패:", e);
+    }
+  }
+}
+
 // 블로그 글 추가 (날짜는 created_at 기본값 = 올린 날 자동)
 export async function addPost(item: {
   studentId: string;
@@ -194,5 +225,61 @@ export async function addPost(item: {
     thumb_url: item.thumbUrl || "",
   });
   if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
+
+// 단건 글 조회 (편집용). 공통글 또는 본인(slug) 글만 반환
+export async function getPost(id: number, slug: string): Promise<PostItem | null> {
+  if (!supabase) return null;
+  const { data } = await supabase
+    .from("posts")
+    .select("id, student_id, category, title, body, thumb_url, created_at")
+    .eq("id", id)
+    .maybeSingle();
+  if (!data) return null;
+  const owner = (data.student_id ?? "").trim();
+  if (owner && owner !== slug) return null;
+  return {
+    id: data.id,
+    category: (data.category ?? "").trim(),
+    title: (data.title ?? "").trim(),
+    body: data.body ?? "",
+    thumbUrl: (data.thumb_url ?? "").trim(),
+    date: fmtDate(data.created_at),
+  };
+}
+
+// 글 수정
+export async function updatePost(
+  id: number,
+  slug: string,
+  patch: { category?: string; title?: string; body?: string; thumbUrl?: string }
+): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const existing = await getPost(id, slug);
+  if (!existing) return { ok: false, message: "글을 찾을 수 없거나 권한이 없습니다." };
+  const upd: Record<string, string> = {};
+  if (patch.category !== undefined) upd.category = patch.category;
+  if (patch.title !== undefined) upd.title = patch.title;
+  if (patch.body !== undefined) upd.body = patch.body;
+  if (patch.thumbUrl !== undefined && patch.thumbUrl !== "") upd.thumb_url = patch.thumbUrl;
+  const { error } = await supabase.from("posts").update(upd).eq("id", id);
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
+
+// 글 삭제 (본문/썸네일 이미지도 스토리지에서 정리)
+export async function deletePost(id: number, slug: string): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const existing = await getPost(id, slug);
+  if (!existing) return { ok: false, message: "글을 찾을 수 없거나 권한이 없습니다." };
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+  if (error) return { ok: false, message: error.message };
+  const urls: string[] = [];
+  if (existing.thumbUrl) urls.push(existing.thumbUrl);
+  const re = /<img[^>]+src="([^"]+)"/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(existing.body)) !== null) urls.push(m[1]);
+  await deleteStorageByUrls(urls);
   return { ok: true };
 }

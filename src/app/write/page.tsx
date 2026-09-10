@@ -9,6 +9,7 @@ function WriteInner() {
   const params = useSearchParams();
   const router = useRouter();
   const slug = params.get("slug") || "";
+  const editId = params.get("id") || "";
   const editorRef = useRef<HTMLDivElement>(null);
 
   const [password, setPassword] = useState("");
@@ -26,7 +27,22 @@ function WriteInner() {
     const pw = localStorage.getItem("pw:" + slug);
     if (pw) setPassword(pw);
     else setNeedPw(true);
-  }, [slug]);
+    // 편집 모드: 기존 글 불러오기
+    if (editId && pw) {
+      fetch(`/api/board/post?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(editId)}&password=${encodeURIComponent(pw)}`)
+        .then((r) => r.json())
+        .then((j) => {
+          if (j.ok && j.post) {
+            setTitle(j.post.title || "");
+            setCategory(j.post.category || "");
+            if (editorRef.current) editorRef.current.innerHTML = j.post.body || "";
+          } else {
+            setMsg(j.message || "글을 불러오지 못했습니다.");
+          }
+        })
+        .catch(() => setMsg("글을 불러오지 못했습니다."));
+    }
+  }, [slug, editId]);
 
   const exec = (cmd: string, value?: string) => {
     document.execCommand("styleWithCSS", false, "true");
@@ -92,9 +108,10 @@ function WriteInner() {
     fd.append("title", title);
     fd.append("category", category);
     fd.append("body", body);
+    if (editId) fd.append("id", editId);
     if (thumb) fd.append("thumb", thumb);
     try {
-      const r = await fetch("/api/board/post", { method: "POST", body: fd });
+      const r = await fetch("/api/board/post", { method: editId ? "PUT" : "POST", body: fd });
       const j = await r.json();
       if (j.ok) {
         localStorage.setItem("pw:" + slug, password);
@@ -116,8 +133,8 @@ function WriteInner() {
       <div style={S.wrap}>
         <div style={S.head}>
           <button style={S.back} onClick={() => router.push("/" + slug)}>← 뒤로</button>
-          <strong>새 글 쓰기</strong>
-          <button style={S.save} disabled={saving} onClick={save}>등록</button>
+          <strong>{editId ? "글 편집" : "새 글 쓰기"}</strong>
+          <button style={S.save} disabled={saving} onClick={save}>{editId ? "수정" : "등록"}</button>
         </div>
 
         {needPw && (

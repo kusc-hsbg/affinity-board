@@ -10156,18 +10156,42 @@ body > .section_wrap { display: none !important; }
       modal.id = "_post_modal";
       modal.innerHTML = '<div class="pm-bg"></div><div class="pm-box">' +
         '<button class="pm-close" aria-label="close">&times;</button>' +
+        '<div class="pm-admin" style="margin-bottom:10px;"><a href="javascript:;" class="pm-edit" style="font-size:13px;color:#0063ff;margin-right:14px;">편집</a>' +
+        '<a href="javascript:;" class="pm-del" style="font-size:13px;color:#d33;">삭제</a></div>' +
         '<div><span class="pm-cat"></span></div><div class="pm-title"></div>' +
         '<div class="pm-meta"></div><div class="pm-body"></div></div>';
       document.body.appendChild(modal);
       modal.querySelector(".pm-bg").addEventListener("click", function () { modal.style.display = "none"; });
       modal.querySelector(".pm-close").addEventListener("click", function () { modal.style.display = "none"; });
+      modal.querySelector(".pm-edit").addEventListener("click", function () {
+        location.href = "/write?slug=" + encodeURIComponent(slug) + "&id=" + encodeURIComponent(modal.dataset.pid);
+      });
+      modal.querySelector(".pm-del").addEventListener("click", function () { deletePost(modal.dataset.pid); });
     }
+    modal.dataset.pid = p.id;
+    // 로그인(비번 보유) 상태에서만 편집/삭제 노출
+    modal.querySelector(".pm-admin").style.display = localStorage.getItem("pw:" + slug) ? "" : "none";
     modal.querySelector(".pm-cat").textContent = p.category || "";
     modal.querySelector(".pm-title").textContent = p.title || "";
     modal.querySelector(".pm-meta").textContent = "Affinity Universe · " + (p.date || "");
     modal.querySelector(".pm-body").innerHTML = p.body || "";
     modal.style.display = "block";
     modal.querySelector(".pm-box").scrollTop = 0;
+  }
+
+  function deletePost(id) {
+    if (!id || !confirm("이 글을 삭제할까요?")) return;
+    var pw = localStorage.getItem("pw:" + slug) || "";
+    fetch("/api/board/post?slug=" + encodeURIComponent(slug) + "&id=" + encodeURIComponent(id) + "&password=" + encodeURIComponent(pw), { method: "DELETE" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j.ok) {
+          var m = document.getElementById("_post_modal");
+          if (m) m.style.display = "none";
+          renderPosts(j.posts || []);
+        } else alert(j.message || "삭제에 실패했습니다.");
+      })
+      .catch(function () { alert("네트워크 오류입니다."); });
   }
   document.addEventListener("click", function (e) {
     var a = e.target.closest ? e.target.closest("a.post_link_wrap") : null;
@@ -10222,8 +10246,12 @@ body > .section_wrap { display: none !important; }
   clearGalleries();
 
   function renderGallery(items) {
+    var admin = !!localStorage.getItem("pw:" + slug);
     var htmlStr = (items || []).map(function (it) {
-      return '<div class="_item item_gallary" style="position:relative;">' +
+      var del = admin && it.id
+        ? '<a href="javascript:;" class="_gal_del" data-gid="' + esc(String(it.id)) + '" title="삭제" style="position:absolute;top:6px;right:6px;z-index:5;width:26px;height:26px;line-height:24px;text-align:center;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:16px;">&times;</a>'
+        : "";
+      return '<div class="_item item_gallary" style="position:relative;">' + del +
         '<a class="item_container _item_container" href="' + esc(it.linkUrl || "#") + '" target="_blank" rel="noopener noreferrer" style="display:block">' +
         '<div class="img_wrap _img_wrap" style="background-image:url(' + esc(it.imageUrl) + ');"></div>' +
         '<div class="slide_overlay"></div></a></div>';
@@ -10233,6 +10261,20 @@ body > .section_wrap { display: none !important; }
       if (c) c.innerHTML = htmlStr;
     });
   }
+
+  // 갤러리 이미지 삭제
+  document.addEventListener("click", function (e) {
+    var d = e.target.closest ? e.target.closest("._gal_del") : null;
+    if (!d) return;
+    e.preventDefault();
+    var gid = d.getAttribute("data-gid");
+    if (!gid || !confirm("이 이미지를 삭제할까요?")) return;
+    var pw = localStorage.getItem("pw:" + slug) || "";
+    fetch("/api/board/upload?slug=" + encodeURIComponent(slug) + "&id=" + encodeURIComponent(gid) + "&password=" + encodeURIComponent(pw), { method: "DELETE" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j.ok) renderGallery(j.items || []); else alert(j.message || "삭제에 실패했습니다."); })
+      .catch(function () { alert("네트워크 오류입니다."); });
+  });
 
   function unlock(data) {
     document.body.classList.add("new_header_overlay");

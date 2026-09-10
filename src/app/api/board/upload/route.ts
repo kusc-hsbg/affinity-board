@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, addGalleryItem, uploadImage, getBoardData } from "@/lib/supabase";
+import { verifyStudent, addGalleryItem, deleteGalleryItem, uploadImage, getBoardData } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
+
+// DELETE ?slug=&id=&password= → 갤러리 이미지 삭제
+export async function DELETE(req: NextRequest) {
+  const url = new URL(req.url);
+  const slug = url.searchParams.get("slug") || "";
+  const id = Number(url.searchParams.get("id") || "0");
+  const password = url.searchParams.get("password") || "";
+  if (!/^user_[A-Za-z0-9]+$/.test(slug) || !id) {
+    return NextResponse.json({ ok: false, message: "잘못된 접근입니다." }, { status: 400 });
+  }
+  const auth = await verifyStudent(slug, password);
+  if (!auth.ok) {
+    return NextResponse.json({ ok: false, message: "비밀번호가 일치하지 않습니다." }, { status: 401 });
+  }
+  const res = await deleteGalleryItem(id);
+  if (!res.ok) {
+    return NextResponse.json({ ok: false, message: res.message }, { status: 400 });
+  }
+  const data = await getBoardData(slug);
+  return NextResponse.json({ ok: true, ...data });
+}
 
 // POST (multipart/form-data): slug, password, title, date, link, imageUrl?, image(file)?
 export async function POST(req: NextRequest) {
