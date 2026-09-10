@@ -12,15 +12,15 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <h4>
-        <a href="https://affinityuniverse.com/About" style={{ color: "#fff", fontSize: "18px" }}>
+        <a href="/About" style={{ color: "#fff", fontSize: "18px" }}>
           About
         </a>
       </h4>
       <p>
-        <a href="https://affinityuniverse.com/Notice">Notice</a>
+        <a href="/Notice">Notice</a>
       </p>
       <p>
-        <a href="https://affinityuniverse.com/CONTACTUS">Contact Us</a>
+        <a href="/CONTACTUS">Contact Us</a>
       </p>
 
       <h4>Customer Care</h4>
