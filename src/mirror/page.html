@@ -9326,7 +9326,7 @@ body > .section_wrap { display: none !important; }
 						<ul id="image_list" style="display: none"></ul></form>
 					</div>
 					</div>
-					<div class="btn-block-right"><a class="btn btn-primary btn-sm float_r" role="button" href="javascript:;" onclick="window.location.href = '/login?back_url=L3VzZXJfMDkwNDA2&amp;used_login_btn=N';">New post</a></div>
+					<div class="btn-block-right" id="_newpost_wrap" style="display:none"></div>
 				</div><nav class="paging-block"><ul class="pagination"><li><a href="javascript:;" class="disabled"><i aria-hidden="true" class="icon-arrow-left"></i><span class="sr-only">Previous</span></a></li><li class="active"><a href="https://affinityuniverse.com/user_090406/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&amp;page=1">1</a></li><li><a href="https://affinityuniverse.com/user_090406/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&amp;page=2">2</a></li><li><a href="https://affinityuniverse.com/user_090406/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&amp;page=3">3</a></li><li><a href="javascript:;" class="disabled"><i aria-hidden="true" class="icon-arrow-right"></i><span class="sr-only">Next</span></a></li></ul></nav></div>
     <!-- //카드형  -->
     
@@ -10183,14 +10183,29 @@ body > .section_wrap { display: none !important; }
     openPost(m[1]);
   });
 
+  var GALLERY_IDS = ["container_w20240715d8d1a01e0d363", "container_w2025060888082fa6f5700"];
+
+  // 원본(레퍼런스) 인스타 피드 잔재 제거: 컨테이너 비우기 + 더보기 버튼 숨김
+  function clearGalleries() {
+    GALLERY_IDS.forEach(function (cid) {
+      var c = document.getElementById(cid);
+      if (c) c.innerHTML = "";
+    });
+    document.querySelectorAll("._more_btn, .more_btn").forEach(function (b) {
+      var wrap = b.closest ? b.closest(".text-center") : null;
+      (wrap || b).style.display = "none";
+    });
+  }
+  clearGalleries();
+
   function renderGallery(items) {
-    var htmlStr = items.map(function (it) {
+    var htmlStr = (items || []).map(function (it) {
       return '<div class="_item item_gallary" style="position:relative;">' +
         '<a class="item_container _item_container" href="' + esc(it.linkUrl || "#") + '" target="_blank" rel="noopener noreferrer" style="display:block">' +
         '<div class="img_wrap _img_wrap" style="background-image:url(' + esc(it.imageUrl) + ');"></div>' +
         '<div class="slide_overlay"></div></a></div>';
     }).join("");
-    ["container_w20240715d8d1a01e0d363", "container_w2025060888082fa6f5700"].forEach(function (cid) {
+    GALLERY_IDS.forEach(function (cid) {
       var c = document.getElementById(cid);
       if (c) c.innerHTML = htmlStr;
     });
@@ -10200,7 +10215,7 @@ body > .section_wrap { display: none !important; }
     document.body.classList.add("new_header_overlay");
     if (gate) gate.style.display = "none";
     if (gateCss) gateCss.remove();
-    if (data && data.items && data.items.length) renderGallery(data.items);
+    renderGallery(data && data.items ? data.items : []);
     showPopups();
     var openIdx = new URLSearchParams(location.search).get("post");
     if (openIdx) openPost(openIdx);
