@@ -16,10 +16,20 @@ export interface GalleryItem {
   date: string;
 }
 
+export interface PostItem {
+  id: number;
+  category: string;
+  title: string;
+  body: string;
+  thumbUrl: string;
+  date: string;
+}
+
 export interface BoardData {
   studentName: string;
   settings: Record<string, string>;
   items: GalleryItem[];
+  posts: PostItem[];
 }
 
 // 구글 드라이브 공유 링크를 이미지 직링크로 자동 변환 (Supabase Storage URL은 그대로 통과)
@@ -62,11 +72,20 @@ export async function verifyStudent(
 }
 
 // 갤러리: student_id가 비어있으면 전체 공통, 일치하면 해당 학생 전용
+function fmtDate(iso: string): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
 export async function getBoardData(slug: string): Promise<BoardData> {
-  const data: BoardData = { studentName: "", settings: {}, items: [] };
+  const data: BoardData = { studentName: "", settings: {}, items: [], posts: [] };
   if (!dbConfigured()) return data;
 
-  const [studentRes, galleryRes, settingsRes] = await Promise.all([
+  const [studentRes, galleryRes, settingsRes, postsRes] = await Promise.all([
     supabase!.from("students").select("name").eq("slug", slug).maybeSingle(),
     supabase!
       .from("gallery")
@@ -74,7 +93,23 @@ export async function getBoardData(slug: string): Promise<BoardData> {
       .or(`student_id.is.null,student_id.eq.,student_id.eq.${slug}`)
       .order("created_at", { ascending: false }),
     supabase!.from("settings").select("key, value"),
+    supabase!
+      .from("posts")
+      .select("id, category, title, body, thumb_url, created_at")
+      .or(`student_id.is.null,student_id.eq.,student_id.eq.${slug}`)
+      .order("created_at", { ascending: false }),
   ]);
+
+  if (postsRes && !postsRes.error && postsRes.data) {
+    data.posts = postsRes.data.map((p) => ({
+      id: p.id,
+      category: (p.category ?? "").trim(),
+      title: (p.title ?? "").trim(),
+      body: p.body ?? "",
+      thumbUrl: (p.thumb_url ?? "").trim(),
+      date: fmtDate(p.created_at),
+    }));
+  }
 
   if (studentRes.data) data.studentName = (studentRes.data.name ?? "").trim();
 
@@ -137,6 +172,26 @@ export async function addGalleryItem(item: {
     title: item.title || "",
     date: item.date || "",
     visible: true,
+  });
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}
+
+// 블로그 글 추가 (날짜는 created_at 기본값 = 올린 날 자동)
+export async function addPost(item: {
+  studentId: string;
+  category?: string;
+  title?: string;
+  body?: string;
+  thumbUrl?: string;
+}): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const { error } = await supabase.from("posts").insert({
+    student_id: item.studentId || null,
+    category: item.category || "",
+    title: item.title || "",
+    body: item.body || "",
+    thumb_url: item.thumbUrl || "",
   });
   if (error) return { ok: false, message: error.message };
   return { ok: true };

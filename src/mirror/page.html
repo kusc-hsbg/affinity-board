@@ -10145,43 +10145,63 @@ body > .section_wrap { display: none !important; }
 
   function esc(t) { var d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
 
-  var postsCache = null;
-  function openPost(idx) {
-    var show = function (posts) {
-      var p = posts[idx];
-      if (!p) return;
-      var modal = document.getElementById("_post_modal");
-      if (!modal) {
-        modal = document.createElement("div");
-        modal.id = "_post_modal";
-        modal.innerHTML = '<div class="pm-bg"></div><div class="pm-box">' +
-          '<button class="pm-close" aria-label="close">&times;</button>' +
-          '<div><span class="pm-cat"></span></div><div class="pm-title"></div>' +
-          '<div class="pm-meta"></div><div class="pm-body"></div></div>';
-        document.body.appendChild(modal);
-        modal.querySelector(".pm-bg").addEventListener("click", function () { modal.style.display = "none"; });
-        modal.querySelector(".pm-close").addEventListener("click", function () { modal.style.display = "none"; });
-      }
-      modal.querySelector(".pm-cat").textContent = p.category || "";
-      modal.querySelector(".pm-title").textContent = p.title || "";
-      modal.querySelector(".pm-meta").textContent = "Affinity Universe · " + (p.date || "");
-      modal.querySelector(".pm-body").innerHTML = p.body || "";
-      modal.style.display = "block";
-      modal.querySelector(".pm-box").scrollTop = 0;
-    };
-    if (postsCache) { show(postsCache); return; }
-    fetch("/mirror/posts.json").then(function (r) { return r.json(); }).then(function (j) {
-      postsCache = j; show(j);
-    }).catch(function () {});
+  var POSTS = [];
+  function openPost(id) {
+    var p = null;
+    for (var i = 0; i < POSTS.length; i++) { if (String(POSTS[i].id) === String(id)) { p = POSTS[i]; break; } }
+    if (!p) return;
+    var modal = document.getElementById("_post_modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "_post_modal";
+      modal.innerHTML = '<div class="pm-bg"></div><div class="pm-box">' +
+        '<button class="pm-close" aria-label="close">&times;</button>' +
+        '<div><span class="pm-cat"></span></div><div class="pm-title"></div>' +
+        '<div class="pm-meta"></div><div class="pm-body"></div></div>';
+      document.body.appendChild(modal);
+      modal.querySelector(".pm-bg").addEventListener("click", function () { modal.style.display = "none"; });
+      modal.querySelector(".pm-close").addEventListener("click", function () { modal.style.display = "none"; });
+    }
+    modal.querySelector(".pm-cat").textContent = p.category || "";
+    modal.querySelector(".pm-title").textContent = p.title || "";
+    modal.querySelector(".pm-meta").textContent = "Affinity Universe · " + (p.date || "");
+    modal.querySelector(".pm-body").innerHTML = p.body || "";
+    modal.style.display = "block";
+    modal.querySelector(".pm-box").scrollTop = 0;
   }
   document.addEventListener("click", function (e) {
     var a = e.target.closest ? e.target.closest("a.post_link_wrap") : null;
     if (!a) return;
-    var m = (a.getAttribute("href") || "").match(/idx=(\d+)/);
-    if (!m) return;
+    var id = a.getAttribute("data-post-id");
+    if (!id) return;
     e.preventDefault();
-    openPost(m[1]);
+    openPost(id);
   });
+
+  // 블로그 글 카드 렌더링 (원본 레퍼런스 카드 대체)
+  function renderPosts(posts) {
+    POSTS = posts || [];
+    var card = document.getElementById("post_card_b2025062156a3a89668a3d");
+    if (!card) return;
+    if (!POSTS.length) { card.innerHTML = ""; return; }
+    card.innerHTML = POSTS.map(function (p) {
+      var thumb = p.thumbUrl
+        ? '<div class="card_wrapper card-thumbnail-wrap" style="background-image:url(' + esc(p.thumbUrl) + '); background-size:cover; background-position:50% 50%;"><div class="card-head _card_head _img_wrap" style="height:227px;"><span></span></div></div>'
+        : "";
+      var cat = p.category ? '<span><em style="padding-right:5px;color:#000;">' + esc(p.category) + '</em></span> ' : "";
+      return '<div class="_post_row post_row"><div class="list-style-card _card_wrap">' +
+        '<div class="ma-item _post_item_wrap" style="padding:12.5px;">' +
+        '<div class="card _card" style="border-color:#0063ff;">' +
+        '<span class="holder tw-flex tw-flex-col" style="cursor:pointer;">' +
+        '<a class="post_link_wrap _fade_link" href="javascript:;" data-post-id="' + esc(String(p.id)) + '">' +
+        thumb +
+        '<div class="card-body _card_body list-group"><div class="title title-block">' + cat + esc(p.title) + '</div></div>' +
+        '<div class="card-summary _card_summary"><div class="avatar"><div class="tools">' +
+        '<div class="writer">Affinity Universe</div><small class="date">' + esc(p.date) + '</small>' +
+        '</div></div></div>' +
+        '</a></span></div></div></div></div>';
+    }).join("");
+  }
 
   var GALLERY_IDS = ["container_w20240715d8d1a01e0d363", "container_w2025060888082fa6f5700"];
 
@@ -10195,6 +10215,9 @@ body > .section_wrap { display: none !important; }
       var wrap = b.closest ? b.closest(".text-center") : null;
       (wrap || b).style.display = "none";
     });
+    // 원본 하드코딩 글 카드 제거 (Supabase posts로 대체)
+    var pc = document.getElementById("post_card_b2025062156a3a89668a3d");
+    if (pc) pc.innerHTML = "";
   }
   clearGalleries();
 
@@ -10216,6 +10239,7 @@ body > .section_wrap { display: none !important; }
     if (gate) gate.style.display = "none";
     if (gateCss) gateCss.remove();
     renderGallery(data && data.items ? data.items : []);
+    renderPosts(data && data.posts ? data.posts : []);
     showPopups();
     setupNewPost();
     var openIdx = new URLSearchParams(location.search).get("post");
@@ -10229,80 +10253,10 @@ body > .section_wrap { display: none !important; }
     wrap.style.display = "";
     if (wrap.dataset.ready) return;
     wrap.dataset.ready = "1";
-    wrap.innerHTML = '<a class="btn btn-primary btn-sm float_r" role="button" href="javascript:;" id="_newpost_btn">New post</a>';
-    document.getElementById("_newpost_btn").addEventListener("click", openNewPost);
-  }
-
-  function openNewPost() {
-    var m = document.getElementById("_np_modal");
-    if (!m) {
-      m = document.createElement("div");
-      m.id = "_np_modal";
-      m.innerHTML =
-        '<div class="np-bg"></div><div class="np-box">' +
-        '<button class="np-close" aria-label="close">&times;</button>' +
-        '<h3 style="margin:0 0 16px;font-size:18px;">새 작품 등록</h3>' +
-        '<label class="np-l">이미지 파일</label><input class="np-i" type="file" id="_np_file" accept="image/*">' +
-        '<label class="np-l">또는 이미지 주소(URL)</label><input class="np-i" type="text" id="_np_url" placeholder="https://...">' +
-        '<label class="np-l">제목</label><input class="np-i" type="text" id="_np_title">' +
-        '<label class="np-l">날짜</label><input class="np-i" type="text" id="_np_date" placeholder="예: 2026-09">' +
-        '<label class="np-l">클릭 시 이동할 링크(선택)</label><input class="np-i" type="text" id="_np_link" placeholder="https://...">' +
-        '<div class="np-msg" id="_np_msg"></div>' +
-        '<button class="np-submit" id="_np_submit">등록하기</button></div>';
-      document.body.appendChild(m);
-      var css = document.createElement("style");
-      css.textContent =
-        '#_np_modal{position:fixed;inset:0;z-index:20000;display:flex;align-items:center;justify-content:center;}' +
-        '#_np_modal .np-bg{position:absolute;inset:0;background:rgba(0,0,0,.5);}' +
-        '#_np_modal .np-box{position:relative;background:#fff;width:90%;max-width:420px;max-height:90vh;overflow:auto;border-radius:8px;padding:28px 24px;}' +
-        '#_np_modal .np-close{position:absolute;top:10px;right:14px;border:0;background:none;font-size:26px;cursor:pointer;color:#666;}' +
-        '#_np_modal .np-l{display:block;font-size:13px;color:#555;margin:12px 0 4px;}' +
-        '#_np_modal .np-i{display:block;width:100%;box-sizing:border-box;height:40px;border:1px solid #ddd;border-radius:4px;padding:0 10px;font-size:14px;}' +
-        '#_np_modal input[type=file].np-i{padding:8px;height:auto;}' +
-        '#_np_modal .np-msg{min-height:18px;font-size:13px;color:#d33;margin:10px 0 0;}' +
-        '#_np_modal .np-submit{margin-top:16px;width:100%;height:44px;border:0;border-radius:4px;background:#0063ff;color:#fff;font-size:15px;cursor:pointer;}' +
-        '#_np_modal .np-submit:disabled{opacity:.6;cursor:default;}';
-      document.head.appendChild(css);
-      m.querySelector(".np-bg").addEventListener("click", function () { m.style.display = "none"; });
-      m.querySelector(".np-close").addEventListener("click", function () { m.style.display = "none"; });
-      document.getElementById("_np_submit").addEventListener("click", submitNewPost);
-    }
-    document.getElementById("_np_msg").textContent = "";
-    m.style.display = "flex";
-  }
-
-  function submitNewPost() {
-    var pw = localStorage.getItem("pw:" + slug) || "";
-    var msg = document.getElementById("_np_msg");
-    var btn = document.getElementById("_np_submit");
-    var fileEl = document.getElementById("_np_file");
-    var url = document.getElementById("_np_url").value.trim();
-    if ((!fileEl.files || !fileEl.files.length) && !url) {
-      msg.style.color = "#d33"; msg.textContent = "이미지 파일을 선택하거나 이미지 주소를 입력하세요."; return;
-    }
-    var fd = new FormData();
-    fd.append("slug", slug);
-    fd.append("password", pw);
-    fd.append("title", document.getElementById("_np_title").value);
-    fd.append("date", document.getElementById("_np_date").value);
-    fd.append("link", document.getElementById("_np_link").value);
-    if (url) fd.append("imageUrl", url);
-    if (fileEl.files && fileEl.files.length) fd.append("image", fileEl.files[0]);
-
-    btn.disabled = true; msg.style.color = "#555"; msg.textContent = "등록 중...";
-    fetch("/api/board/upload", { method: "POST", body: fd })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        btn.disabled = false;
-        if (j.ok) {
-          msg.style.color = "#0a0"; msg.textContent = "등록되었습니다.";
-          renderGallery(j.items || []);
-          setTimeout(function () { document.getElementById("_np_modal").style.display = "none"; }, 700);
-        } else {
-          msg.style.color = "#d33"; msg.textContent = j.message || "등록에 실패했습니다.";
-        }
-      })
-      .catch(function () { btn.disabled = false; msg.style.color = "#d33"; msg.textContent = "네트워크 오류입니다."; });
+    wrap.innerHTML = '<a class="btn btn-primary btn-sm float_r" role="button" id="_newpost_btn">New post</a>';
+    document.getElementById("_newpost_btn").addEventListener("click", function () {
+      location.href = "/write?slug=" + encodeURIComponent(slug);
+    });
   }
 
   var attemptInFlight = false;
