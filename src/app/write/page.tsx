@@ -18,6 +18,8 @@ function WriteInner() {
   const [thumb, setThumb] = useState<File | null>(null);
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const imgInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -34,7 +36,45 @@ function WriteInner() {
 
   const insertImageUrl = () => {
     const url = window.prompt("본문에 넣을 이미지 주소(URL)를 입력하세요");
-    if (url) exec("insertImage", url);
+    if (url) insertImages([url]);
+  };
+
+  const insertImages = (urls: string[]) => {
+    const ed = editorRef.current;
+    if (!ed) return;
+    ed.focus();
+    const html = urls
+      .map((u) => `<img src="${u}" style="max-width:100%;height:auto;display:block;margin:8px 0;">`)
+      .join("");
+    // 커서 위치에 삽입, 실패 시 끝에 추가
+    if (!document.execCommand("insertHTML", false, html)) {
+      ed.innerHTML += html;
+    }
+  };
+
+  const onPickImages = async (files: FileList | null) => {
+    if (!files || !files.length || !slug) return;
+    setUploading(true);
+    setMsg(`이미지 ${files.length}장 업로드 중...`);
+    const fd = new FormData();
+    fd.append("slug", slug);
+    fd.append("password", password);
+    Array.from(files).forEach((f) => fd.append("images", f));
+    try {
+      const r = await fetch("/api/board/image", { method: "POST", body: fd });
+      const j = await r.json();
+      if (j.ok && j.urls?.length) {
+        insertImages(j.urls);
+        setMsg(`이미지 ${j.urls.length}장 추가됨`);
+      } else {
+        setMsg(j.message || "이미지 업로드에 실패했습니다.");
+      }
+    } catch {
+      setMsg("이미지 업로드 중 네트워크 오류입니다.");
+    } finally {
+      setUploading(false);
+      if (imgInputRef.current) imgInputRef.current.value = "";
+    }
   };
 
   const save = async () => {
@@ -116,7 +156,18 @@ function WriteInner() {
           <button style={S.tb} onClick={() => exec("justifyLeft")}>왼쪽</button>
           <button style={S.tb} onClick={() => exec("justifyCenter")}>가운데</button>
           <button style={S.tb} onClick={() => exec("justifyRight")}>오른쪽</button>
-          <button style={S.tb} onClick={insertImageUrl}>이미지</button>
+          <button style={S.tb} disabled={uploading} onClick={() => imgInputRef.current?.click()}>
+            {uploading ? "업로드 중..." : "🖼 이미지 추가(여러 장)"}
+          </button>
+          <button style={S.tb} onClick={insertImageUrl}>이미지 URL</button>
+          <input
+            ref={imgInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            style={{ display: "none" }}
+            onChange={(e) => onPickImages(e.target.files)}
+          />
         </div>
 
         <div ref={editorRef} contentEditable suppressContentEditableWarning style={S.editor} data-ph="여기에 내용을 작성하세요..." />
