@@ -99,3 +99,45 @@ export async function getBoardData(slug: string): Promise<BoardData> {
   if (galleryRes.error) console.error("gallery 조회 실패:", galleryRes.error.message);
   return data;
 }
+
+// Storage에 이미지 업로드 후 공개 URL 반환
+export async function uploadImage(
+  file: ArrayBuffer,
+  contentType: string,
+  ext: string
+): Promise<string | null> {
+  if (!supabase) return null;
+  const safeExt = (ext || "jpg").replace(/[^a-z0-9]/gi, "").toLowerCase() || "jpg";
+  // 파일명은 랜덤성 대신 카운터/타임스탬프 대신 crypto 사용 불가 환경 고려 → 경로에 uuid 유사값
+  const name = `${Date.now()}-${Math.floor(Math.random() * 1e9)}.${safeExt}`;
+  const { error } = await supabase.storage
+    .from("gallery")
+    .upload(name, file, { contentType: contentType || "image/jpeg", upsert: false });
+  if (error) {
+    console.error("이미지 업로드 실패:", error.message);
+    return null;
+  }
+  const { data } = supabase.storage.from("gallery").getPublicUrl(name);
+  return data.publicUrl;
+}
+
+// 갤러리 항목 추가
+export async function addGalleryItem(item: {
+  studentId: string;
+  imageUrl: string;
+  linkUrl?: string;
+  title?: string;
+  date?: string;
+}): Promise<{ ok: boolean; message?: string }> {
+  if (!supabase) return { ok: false, message: "DB가 설정되지 않았습니다." };
+  const { error } = await supabase.from("gallery").insert({
+    student_id: item.studentId || null,
+    image_url: item.imageUrl,
+    link_url: item.linkUrl || "",
+    title: item.title || "",
+    date: item.date || "",
+    visible: true,
+  });
+  if (error) return { ok: false, message: error.message };
+  return { ok: true };
+}

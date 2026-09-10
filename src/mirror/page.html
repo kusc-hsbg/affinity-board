@@ -10217,8 +10217,92 @@ body > .section_wrap { display: none !important; }
     if (gateCss) gateCss.remove();
     renderGallery(data && data.items ? data.items : []);
     showPopups();
+    setupNewPost();
     var openIdx = new URLSearchParams(location.search).get("post");
     if (openIdx) openPost(openIdx);
+  }
+
+  // 새 글(작품) 등록 버튼 + 모달
+  function setupNewPost() {
+    var wrap = document.getElementById("_newpost_wrap");
+    if (!wrap) return;
+    wrap.style.display = "";
+    if (wrap.dataset.ready) return;
+    wrap.dataset.ready = "1";
+    wrap.innerHTML = '<a class="btn btn-primary btn-sm float_r" role="button" href="javascript:;" id="_newpost_btn">New post</a>';
+    document.getElementById("_newpost_btn").addEventListener("click", openNewPost);
+  }
+
+  function openNewPost() {
+    var m = document.getElementById("_np_modal");
+    if (!m) {
+      m = document.createElement("div");
+      m.id = "_np_modal";
+      m.innerHTML =
+        '<div class="np-bg"></div><div class="np-box">' +
+        '<button class="np-close" aria-label="close">&times;</button>' +
+        '<h3 style="margin:0 0 16px;font-size:18px;">새 작품 등록</h3>' +
+        '<label class="np-l">이미지 파일</label><input class="np-i" type="file" id="_np_file" accept="image/*">' +
+        '<label class="np-l">또는 이미지 주소(URL)</label><input class="np-i" type="text" id="_np_url" placeholder="https://...">' +
+        '<label class="np-l">제목</label><input class="np-i" type="text" id="_np_title">' +
+        '<label class="np-l">날짜</label><input class="np-i" type="text" id="_np_date" placeholder="예: 2026-09">' +
+        '<label class="np-l">클릭 시 이동할 링크(선택)</label><input class="np-i" type="text" id="_np_link" placeholder="https://...">' +
+        '<div class="np-msg" id="_np_msg"></div>' +
+        '<button class="np-submit" id="_np_submit">등록하기</button></div>';
+      document.body.appendChild(m);
+      var css = document.createElement("style");
+      css.textContent =
+        '#_np_modal{position:fixed;inset:0;z-index:20000;display:flex;align-items:center;justify-content:center;}' +
+        '#_np_modal .np-bg{position:absolute;inset:0;background:rgba(0,0,0,.5);}' +
+        '#_np_modal .np-box{position:relative;background:#fff;width:90%;max-width:420px;max-height:90vh;overflow:auto;border-radius:8px;padding:28px 24px;}' +
+        '#_np_modal .np-close{position:absolute;top:10px;right:14px;border:0;background:none;font-size:26px;cursor:pointer;color:#666;}' +
+        '#_np_modal .np-l{display:block;font-size:13px;color:#555;margin:12px 0 4px;}' +
+        '#_np_modal .np-i{display:block;width:100%;box-sizing:border-box;height:40px;border:1px solid #ddd;border-radius:4px;padding:0 10px;font-size:14px;}' +
+        '#_np_modal input[type=file].np-i{padding:8px;height:auto;}' +
+        '#_np_modal .np-msg{min-height:18px;font-size:13px;color:#d33;margin:10px 0 0;}' +
+        '#_np_modal .np-submit{margin-top:16px;width:100%;height:44px;border:0;border-radius:4px;background:#0063ff;color:#fff;font-size:15px;cursor:pointer;}' +
+        '#_np_modal .np-submit:disabled{opacity:.6;cursor:default;}';
+      document.head.appendChild(css);
+      m.querySelector(".np-bg").addEventListener("click", function () { m.style.display = "none"; });
+      m.querySelector(".np-close").addEventListener("click", function () { m.style.display = "none"; });
+      document.getElementById("_np_submit").addEventListener("click", submitNewPost);
+    }
+    document.getElementById("_np_msg").textContent = "";
+    m.style.display = "flex";
+  }
+
+  function submitNewPost() {
+    var pw = localStorage.getItem("pw:" + slug) || "";
+    var msg = document.getElementById("_np_msg");
+    var btn = document.getElementById("_np_submit");
+    var fileEl = document.getElementById("_np_file");
+    var url = document.getElementById("_np_url").value.trim();
+    if ((!fileEl.files || !fileEl.files.length) && !url) {
+      msg.style.color = "#d33"; msg.textContent = "이미지 파일을 선택하거나 이미지 주소를 입력하세요."; return;
+    }
+    var fd = new FormData();
+    fd.append("slug", slug);
+    fd.append("password", pw);
+    fd.append("title", document.getElementById("_np_title").value);
+    fd.append("date", document.getElementById("_np_date").value);
+    fd.append("link", document.getElementById("_np_link").value);
+    if (url) fd.append("imageUrl", url);
+    if (fileEl.files && fileEl.files.length) fd.append("image", fileEl.files[0]);
+
+    btn.disabled = true; msg.style.color = "#555"; msg.textContent = "등록 중...";
+    fetch("/api/board/upload", { method: "POST", body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        btn.disabled = false;
+        if (j.ok) {
+          msg.style.color = "#0a0"; msg.textContent = "등록되었습니다.";
+          renderGallery(j.items || []);
+          setTimeout(function () { document.getElementById("_np_modal").style.display = "none"; }, 700);
+        } else {
+          msg.style.color = "#d33"; msg.textContent = j.message || "등록에 실패했습니다.";
+        }
+      })
+      .catch(function () { btn.disabled = false; msg.style.color = "#d33"; msg.textContent = "네트워크 오류입니다."; });
   }
 
   var attemptInFlight = false;
