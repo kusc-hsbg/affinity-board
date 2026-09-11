@@ -354,3 +354,12 @@ b {
   color: #fff;
   padding: 30px 0 34px;
 }
+
+/* ── 글쓰기 페이지: 플레이스홀더 ── */
+[contenteditable][data-ph]:empty:before {
+  content: attr(data-ph);
+  color: #c2c2c2;
+  letter-spacing: 1px;
+  font-variant: small-caps;
+  pointer-events: none;
+}
