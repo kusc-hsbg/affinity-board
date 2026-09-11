@@ -9327,7 +9327,7 @@ body > .section_wrap { display: none !important; }
 					</div>
 					</div>
 					<div class="btn-block-right" id="_newpost_wrap" style="display:none"></div>
-				</div><nav class="paging-block"><ul class="pagination"><li><a href="javascript:;" class="disabled"><i aria-hidden="true" class="icon-arrow-left"></i><span class="sr-only">Previous</span></a></li><li class="active"><a href="javascript:;">1</a></li><li><a href="javascript:;">2</a></li><li><a href="javascript:;">3</a></li><li><a href="javascript:;" class="disabled"><i aria-hidden="true" class="icon-arrow-right"></i><span class="sr-only">Next</span></a></li></ul></nav></div>
+				</div><nav class="paging-block" id="_paging_nav" style="display:none"><ul class="pagination" id="_paging_list"></ul></nav></div>
     <!-- //카드형  -->
     
         
@@ -10202,13 +10202,56 @@ body > .section_wrap { display: none !important; }
     openPost(id);
   });
 
-  // 블로그 글 카드 렌더링 (원본 레퍼런스 카드 대체)
+  // 블로그 글 카드 렌더링 (원본 레퍼런스 카드 대체) + 페이지네이션
+  var PAGE_SIZE = 9;
+  var CUR_PAGE = 1;
+
   function renderPosts(posts) {
     POSTS = posts || [];
+    CUR_PAGE = 1;
+    renderPostPage();
+  }
+
+  function renderPagingNav(totalPages) {
+    var nav = document.getElementById("_paging_nav");
+    var list = document.getElementById("_paging_list");
+    if (!nav || !list) return;
+    if (totalPages <= 1) { nav.style.display = "none"; list.innerHTML = ""; return; }
+    nav.style.display = "";
+    var html = "";
+    var prevDis = CUR_PAGE <= 1 ? " disabled" : "";
+    html += '<li><a href="javascript:;" class="_pg_go' + prevDis + '" data-pg="' + (CUR_PAGE - 1) + '"><i aria-hidden="true" class="icon-arrow-left"></i><span class="sr-only">Previous</span></a></li>';
+    for (var i = 1; i <= totalPages; i++) {
+      var active = i === CUR_PAGE ? ' class="active"' : "";
+      html += '<li' + active + '><a href="javascript:;" class="_pg_go" data-pg="' + i + '">' + i + '</a></li>';
+    }
+    var nextDis = CUR_PAGE >= totalPages ? " disabled" : "";
+    html += '<li><a href="javascript:;" class="_pg_go' + nextDis + '" data-pg="' + (CUR_PAGE + 1) + '"><i aria-hidden="true" class="icon-arrow-right"></i><span class="sr-only">Next</span></a></li>';
+    list.innerHTML = html;
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("._pg_go") : null;
+    if (!a) return;
+    e.preventDefault();
+    if (a.className.indexOf("disabled") !== -1) return;
+    var pg = parseInt(a.getAttribute("data-pg"), 10);
+    if (!pg) return;
+    CUR_PAGE = pg;
+    renderPostPage();
+    var card = document.getElementById("post_card_b2025062156a3a89668a3d");
+    if (card && card.scrollIntoView) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  function renderPostPage() {
     var card = document.getElementById("post_card_b2025062156a3a89668a3d");
     if (!card) return;
-    if (!POSTS.length) { card.innerHTML = ""; return; }
-    card.innerHTML = POSTS.map(function (p) {
+    var totalPages = Math.max(1, Math.ceil(POSTS.length / PAGE_SIZE));
+    if (CUR_PAGE > totalPages) CUR_PAGE = totalPages;
+    if (!POSTS.length) { card.innerHTML = ""; renderPagingNav(1); return; }
+    var start = (CUR_PAGE - 1) * PAGE_SIZE;
+    var pagePosts = POSTS.slice(start, start + PAGE_SIZE);
+    card.innerHTML = pagePosts.map(function (p) {
       var thumb = p.thumbUrl
         ? '<div class="card_wrapper card-thumbnail-wrap" style="background-image:url(' + esc(p.thumbUrl) + '); background-size:cover; background-position:50% 50%;"><div class="card-head _card_head _img_wrap" style="height:227px;"><span></span></div></div>'
         : "";
@@ -10225,6 +10268,7 @@ body > .section_wrap { display: none !important; }
         '</div></div></div>' +
         '</a></span></div></div></div></div>';
     }).join("");
+    renderPagingNav(totalPages);
   }
 
   var GALLERY_IDS = ["container_w20240715d8d1a01e0d363", "container_w2025060888082fa6f5700"];
