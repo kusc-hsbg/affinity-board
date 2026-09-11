@@ -6756,10 +6756,30 @@ body > .section_wrap { display: none !important; }
 #_post_modal .pm-body { font-size: 15px; line-height: 1.8; color: #111; }
 #_post_modal .pm-body img { max-width: 100%; height: auto; }
 #_post_modal .pm-body hr { border: 0; border-top: 1px solid #e5e5e5; margin: 24px 0; }
-/* ── 모바일: 게시판 카드 1열 (원본은 imweb JS가 재배치) ── */
+/* ── 업로드 글 카드 그리드 + 썸네일 비율 (3열, 3:2 가로형) ── */
+#post_card_b2025062156a3a89668a3d ._post_row.post_row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  height: auto;
+}
+#post_card_b2025062156a3a89668a3d .list-style-card._card_wrap {
+  width: 100% !important;
+  flex: initial !important;
+  float: none !important;
+}
+#post_card_b2025062156a3a89668a3d .card-thumbnail-wrap { width: 100%; }
+#post_card_b2025062156a3a89668a3d .card-head._img_wrap {
+  height: 0 !important;
+  padding-top: 66.6667%; /* 3:2 가로 비율 (원본 카드 227px 대응) */
+  width: 100%;
+}
+/* ── 모바일/태블릿: 카드 열 수 조정 ── */
+@media (max-width: 991px) {
+  #post_card_b2025062156a3a89668a3d ._post_row.post_row { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 767px) {
-  .grid_03 ._post_row.post_row { flex-wrap: wrap; }
-  .grid_03 .list-style-card._card_wrap { width: 100% !important; flex: 0 0 100% !important; }
+  #post_card_b2025062156a3a89668a3d ._post_row.post_row { grid-template-columns: 1fr; }
   .grid_03 .ma-item._post_item_wrap { padding: 6.25px !important; }
   .list-style.grid_03 { margin: -6.25px -6.25px 0 !important; }
 }
@@ -10251,12 +10271,12 @@ body > .section_wrap { display: none !important; }
     if (!POSTS.length) { card.innerHTML = ""; renderPagingNav(1); return; }
     var start = (CUR_PAGE - 1) * PAGE_SIZE;
     var pagePosts = POSTS.slice(start, start + PAGE_SIZE);
-    card.innerHTML = pagePosts.map(function (p) {
+    var cards = pagePosts.map(function (p) {
       var thumb = p.thumbUrl
-        ? '<div class="card_wrapper card-thumbnail-wrap" style="background-image:url(' + esc(p.thumbUrl) + '); background-size:cover; background-position:50% 50%;"><div class="card-head _card_head _img_wrap" style="height:227px;"><span></span></div></div>'
+        ? '<div class="card_wrapper card-thumbnail-wrap" style="background-image:url(' + esc(p.thumbUrl) + '); background-size:cover; background-position:50% 50%;"><div class="card-head _card_head _img_wrap"><span></span></div></div>'
         : "";
       var cat = p.category ? '<span><em style="padding-right:5px;color:#000;">' + esc(p.category) + '</em></span> ' : "";
-      return '<div class="_post_row post_row"><div class="list-style-card _card_wrap">' +
+      return '<div class="list-style-card _card_wrap">' +
         '<div class="ma-item _post_item_wrap" style="padding:12.5px;">' +
         '<div class="card _card" style="border-color:#0063ff;">' +
         '<span class="holder tw-flex tw-flex-col" style="cursor:pointer;">' +
@@ -10266,8 +10286,9 @@ body > .section_wrap { display: none !important; }
         '<div class="card-summary _card_summary"><div class="avatar"><div class="tools">' +
         '<div class="writer">Affinity Universe</div><small class="date">' + esc(p.date) + '</small>' +
         '</div></div></div>' +
-        '</a></span></div></div></div></div>';
+        '</a></span></div></div></div>';
     }).join("");
+    card.innerHTML = '<div class="_post_row post_row">' + cards + '</div>';
     renderPagingNav(totalPages);
   }
 
