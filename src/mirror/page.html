@@ -6812,7 +6812,30 @@ body > .section_wrap { display: none !important; }
 /* ── 공지 팝업 ── */
 .popup-banner-wrap { display: none; }
 @media (max-width: 991px) {
-  .pop-container { margin-left: 0 !important; left: 50% !important; transform: translateX(-50%); }
+  /* 팝업이 화면 폭을 넘지 않고 화면 중앙에 오도록
+     (팝업 자체 인라인/중첩 스타일의 ID 규칙을 이기려면 transform 에 !important 필요) */
+  .pop-container {
+    position: fixed !important;
+    margin-left: 0 !important; left: 50% !important; right: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 92vw !important; max-width: 92vw !important;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .pop-container .pop-item,
+  .pop-container .pop-img,
+  .pop-container .btn-group { width: 100% !important; max-width: 100% !important; box-sizing: border-box; }
+  .pop-container .pop-img img { width: 100% !important; height: auto !important; }
+  .pop-container .btn-group .btn { box-sizing: border-box; }
+
+  /* imweb 반응형 전환 스크립트 부재 보정: PC 전용(mobile_hide) 섹션 숨김
+     → 하단 About~Copyright 푸터가 두 번 반복되던 중복 제거 (모바일 섹션이 대체)
+     #doz_footer .section_wrap { display:flow-root !important } 를 이기기 위해 특정도 상향 */
+  #doz_footer .section_wrap.mobile_hide,
+  .section_wrap.mobile_hide { display: none !important; }
+
+  /* 가로 오버플로 안전장치 */
+  html, body { overflow-x: hidden; }
 }
 </style>
 </head>
