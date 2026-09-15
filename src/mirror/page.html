@@ -6834,6 +6834,16 @@ body > .section_wrap { display: none !important; }
   #doz_footer .section_wrap.mobile_hide,
   .section_wrap.mobile_hide { display: none !important; }
 
+  /* "수강생 작품과 수업 현황을 한 번에!" 인트로 영역은 흰 배경으로
+     (하단 About~Copyright 파란 푸터는 자체 배경을 가진 코드 위젯이라 그대로 파랑 유지) */
+  #s20240715eea57eed99f53,
+  #s20240715eea57eed99f53 > .section_bg_color { background-color: #fff !important; }
+
+  /* user 페이지 좌우 여백: 섹션 배경(절대위치)은 full-bleed 유지, 콘텐츠만 안쪽으로 */
+  .section_wrap > main > .inside { padding-left: 18px !important; padding-right: 18px !important; }
+  /* 파란 푸터 위젯은 가장자리까지 꽉 차게(full-bleed) 유지 */
+  #w2025091892383551d5194 { margin-left: -18px !important; margin-right: -18px !important; }
+
   /* 가로 오버플로 안전장치 */
   html, body { overflow-x: hidden; }
 }
