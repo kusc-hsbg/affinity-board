@@ -6665,11 +6665,26 @@ padding-top: 0 !important;
     #doz_footer .footer-section .footer-company-info #footer-company-info-line {
         margin: 10px 0;
     }
-    /* ── 하단 푸터 전체 브랜드 블루 배경 + 사업자정보 흰색 글자 ── */
+    /* ── 하단 푸터 브랜드 블루 배경 ── */
     #doz_footer_wrap,
     #doz_footer,
-    #doz_footer .footer-section.footer-type05 {
+    #doz_footer .footer-section {
         background-color: #0063ff !important;
+    }
+    /* 플로트 자식으로 컨테이너 높이가 0으로 붕괴 → 블루 배경이 안 채워지던 문제.
+       flow-root로 플로트를 감싸 실제 높이를 갖게 해 푸터 전체가 파랗게 채워지도록. */
+    #doz_footer,
+    #doz_footer .footer-section,
+    #doz_footer .inside,
+    #doz_footer .foot-custom,
+    #doz_footer .custom-text,
+    #doz_footer .custom-text-info,
+    #doz_footer .fr-view,
+    #doz_footer .doz_row,
+    #doz_footer [class*="col-dz"],
+    #doz_footer main,
+    #doz_footer .section_wrap {
+        display: flow-root !important;
     }
     #doz_footer .footer-company-info,
     #doz_footer .footer-company-info #footer-company-info-line,
