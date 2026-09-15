@@ -9416,7 +9416,7 @@ body > .section_wrap { display: none !important; }
 	<div id="padding_w2024071555daad3f5e5b5" style="width:100%; min-height:1px; height:0px; "></div>
 </div>
 </div></div></div></div><div doz_type="row" doz_xdz="12" class="doz_row col-xdz col-xdz-12 korean-text"><div doz_type="grid" doz_xdz="12" class="col-dz col-dz- col-xdz col-xdz-12 korean-text"><div doz_type="widget" id="w202407154990ca16efe34" class="korean-text"><div class="_widget_data animated wg_animated korean-text" data-widget-name="텍스트" data-widget-type="text" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="Y">	<div doz_type="text" class="widget _text_wrap widget_text_wrap fr-view default_padding korean-text" id="text_w202407154990ca16efe34">
-		<div class="text-table korean-text"><div class="korean-text"><h6 class="korean-text"><span style="font-size: 26px; letter-spacing: -1px;" class="korean-text"><strong class="korean-text korean-text-Bold">수강생 작품과</strong></span></h6><h6 class="korean-text"><span style="font-size: 26px; letter-spacing: -1px;" class="korean-text"><strong class="korean-text korean-text-Bold">수업 현황을 한 번에!</strong></span></h6><p style="text-align: justify;" class="korean-text"><span style="font-size: 26px; letter-spacing: -1px;" class="korean-text"><span style="color: rgb(0, 0, 0);" class="korean-text"><span style="font-size: 16px; letter-spacing: -1px;" class="korean-text">공식 인스타그램, 유튜브, 블로그 채널을 통해</span></span></span><br><span style="font-size: 26px; letter-spacing: -1px;" class="korean-text"><span style="color: rgb(0, 0, 0);" class="korean-text"><span style="font-size: 16px; letter-spacing: -1px;" class="korean-text">학습 과정과 결과를 기록하고 있습니다.</span></span></span></p></div></div>
+		<div class="text-table korean-text"></div>
 	</div>
 	
 </div></div></div></div><div doz_type="row" doz_xdz="12" class="doz_row  col-xdz col-xdz-12"><div doz_type="grid" doz_xdz="3" class="col-dz col-dz-  col-xdz col-xdz-3"><div doz_type="widget" id="w20240715d192c5b36d754"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="Y"><div class="widget icon  no_bg" style="text-align: center">
@@ -10184,6 +10184,7 @@ body > .section_wrap { display: none !important; }
   var slug = location.pathname.split("/")[1] || "user_090406";
   var gate = document.querySelector(".menu_password");
   var gateCss = document.getElementById("_gate_css");
+  var ADMIN = false; // 로그인(편집 권한) 상태
 
   window.$ = window.$ || function (x) { return x; };
   window.popupCookieMake = function (id) {
@@ -10242,8 +10243,8 @@ body > .section_wrap { display: none !important; }
       modal.querySelector(".pm-del").addEventListener("click", function () { deletePost(modal.dataset.pid); });
     }
     modal.dataset.pid = p.id;
-    // 로그인(비번 보유) 상태에서만 편집/삭제 노출
-    modal.querySelector(".pm-admin").style.display = localStorage.getItem("pw:" + slug) ? "" : "none";
+    // 로그인(admin) 상태에서만 편집/삭제 노출
+    modal.querySelector(".pm-admin").style.display = ADMIN ? "" : "none";
     modal.querySelector(".pm-cat").textContent = p.category || "";
     modal.querySelector(".pm-title").textContent = p.title || "";
     modal.querySelector(".pm-meta").textContent = "Affinity Universe · " + (p.date || "");
@@ -10394,10 +10395,15 @@ body > .section_wrap { display: none !important; }
       .catch(function () { alert("네트워크 오류입니다."); });
   });
 
-  function unlock(data) {
+  // 게시판 섹션을 공개로 노출 (비밀번호 없이 열람)
+  function reveal() {
     document.body.classList.add("new_header_overlay");
-    if (gate) gate.style.display = "none";
-    if (gateCss) gateCss.remove();
+    if (gateCss) { gateCss.remove(); gateCss = null; }
+  }
+
+  // 게시판 데이터 렌더링
+  function applyBoard(data) {
+    reveal();
     renderGallery(data && data.items ? data.items : []);
     renderPosts(data && data.posts ? data.posts : []);
     showPopups();
@@ -10406,51 +10412,106 @@ body > .section_wrap { display: none !important; }
     if (openIdx) openPost(openIdx);
   }
 
-  // 새 글(작품) 등록 버튼 + 모달
+  // 로그인(편집 권한) 상태 반영: New post 버튼 / 모달 편집·삭제 노출 토글
+  function setAdmin(on) {
+    ADMIN = !!on;
+    var wrap = document.getElementById("_newpost_wrap");
+    if (wrap) wrap.style.display = ADMIN ? "" : "none";
+    var lb = document.getElementById("_login_btn");
+    if (lb) lb.textContent = ADMIN ? "로그아웃" : "로그인";
+    var modal = document.getElementById("_post_modal");
+    if (modal) {
+      var a = modal.querySelector(".pm-admin");
+      if (a) a.style.display = ADMIN ? "" : "none";
+    }
+  }
+
+  // 새 글 등록 버튼 (표시 여부는 setAdmin이 제어)
   function setupNewPost() {
     var wrap = document.getElementById("_newpost_wrap");
     if (!wrap) return;
-    wrap.style.display = "";
-    if (wrap.dataset.ready) return;
-    wrap.dataset.ready = "1";
-    wrap.innerHTML = '<a class="btn btn-primary btn-sm float_r" role="button" id="_newpost_btn">New post</a>';
-    document.getElementById("_newpost_btn").addEventListener("click", function () {
-      location.href = "/write?slug=" + encodeURIComponent(slug);
-    });
+    if (!wrap.dataset.ready) {
+      wrap.dataset.ready = "1";
+      wrap.innerHTML = '<a class="btn btn-primary btn-sm float_r" role="button" id="_newpost_btn">New post</a>';
+      document.getElementById("_newpost_btn").addEventListener("click", function () {
+        location.href = "/write?slug=" + encodeURIComponent(slug);
+      });
+    }
+    wrap.style.display = ADMIN ? "" : "none";
   }
 
-  var attemptInFlight = false;
-  function attempt(pw, silent) {
-    if (attemptInFlight) return Promise.resolve();
-    attemptInFlight = true;
+  // 로그인 패널 표시/숨김 (원본 잠금화면을 오버레이 로그인 패널로 재사용)
+  function showLogin() {
+    if (!gate) return;
+    gate.style.cssText = "position:fixed;left:0;top:0;right:0;bottom:0;z-index:9998;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;";
+    var inp = gate.querySelector('input[name="password"]');
+    if (inp) { inp.value = ""; setTimeout(function () { inp.focus(); }, 0); }
+  }
+  function hideLogin() { if (gate) gate.style.display = "none"; }
+
+  var loadInFlight = false;
+  // 게시판 로드. pw 없으면 공개 열람(admin:false), pw 맞으면 편집 권한(admin:true)
+  function loadBoard(pw, fromLogin) {
+    if (loadInFlight) return Promise.resolve();
+    loadInFlight = true;
     return fetch("/api/board", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug: slug, password: pw }),
+      body: JSON.stringify({ slug: slug, password: pw || "" }),
     }).then(function (r) { return r.json(); }).then(function (j) {
-      if (j.ok) { localStorage.setItem("pw:" + slug, pw); unlock(j); }
-      else {
-        localStorage.removeItem("pw:" + slug);
-        if (!silent) alert(j.message || "비밀번호가 일치하지 않습니다.");
+      if (j.ok) {
+        setAdmin(!!j.admin);
+        applyBoard(j);
+        if (j.admin && pw) localStorage.setItem("pw:" + slug, pw);
+        else if (!j.admin) localStorage.removeItem("pw:" + slug);
+        if (fromLogin && j.admin) hideLogin();
+      } else {
+        if (pw) localStorage.removeItem("pw:" + slug);
+        if (fromLogin) alert(j.message || "비밀번호가 일치하지 않습니다.");
       }
     }).catch(function () {
-      if (pw === slug.replace("user_", "") && pw.length > 0) {
+      // 개발 폴백(DB 미설정): pw가 user_XXXX 의 XXXX 와 같으면 편집 권한
+      var fb = slug.replace("user_", "");
+      if (pw && pw === fb && fb.length > 0) {
+        setAdmin(true);
+        applyBoard(null);
         localStorage.setItem("pw:" + slug, pw);
-        unlock(null);
-      } else if (!silent) {
-        alert("비밀번호가 일치하지 않습니다.");
+        if (fromLogin) hideLogin();
+      } else {
+        reveal();
+        if (fromLogin) alert("네트워크 오류입니다.");
       }
-    }).then(function () { attemptInFlight = false; });
+    }).then(function () { loadInFlight = false; });
   }
 
+  // 로그인 폼(잠금화면 재사용) 제출 → 로그인 시도
   var form = document.getElementById("menu_password_form");
   if (form) {
     var input = form.querySelector('input[name="password"]');
     var btn = form.querySelector("a._submit");
-    var go = function (e) { if (e) e.preventDefault(); attempt(input ? input.value : ""); };
+    var go = function (e) { if (e) e.preventDefault(); loadBoard(input ? input.value : "", true); };
     if (btn) btn.addEventListener("click", go);
     form.addEventListener("submit", go);
+    // "Back to main page" 링크 → 로그인 패널 닫기
+    var back = form.parentNode.querySelector("a.back");
+    if (back) back.addEventListener("click", function (e) { e.preventDefault(); hideLogin(); });
   }
+
+  // 플로팅 로그인/로그아웃 버튼
+  var loginBtn = document.createElement("button");
+  loginBtn.id = "_login_btn";
+  loginBtn.type = "button";
+  loginBtn.textContent = "로그인";
+  loginBtn.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:9999;background:#0063ff;color:#fff;border:0;border-radius:24px;padding:10px 20px;font-size:14px;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);";
+  loginBtn.addEventListener("click", function () {
+    if (ADMIN) {
+      localStorage.removeItem("pw:" + slug);
+      setAdmin(false);
+    } else {
+      showLogin();
+    }
+  });
+  document.body.appendChild(loginBtn);
 
   // 원본 커스텀 커서(.pointer) 재현: 마우스를 따라다니는 파란 원
   var ptr = document.querySelector(".pointer");
@@ -10459,9 +10520,12 @@ body > .section_wrap { display: none !important; }
     ptr.style.top = e.pageY + "px";
   });
 
+  // 초기: 잠금화면 숨기고 게시판 공개 노출 + 저장된 pw 있으면 편집 권한 복원
+  if (gate) gate.style.display = "none";
+  reveal();
   var qpw = new URLSearchParams(location.search).get("pw");
   var savedPw = qpw || localStorage.getItem("pw:" + slug);
-  if (savedPw) attempt(savedPw, true);
+  loadBoard(savedPw || "", false);
 })();
 </script>
 </body></html>

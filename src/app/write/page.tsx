@@ -12,6 +12,13 @@ function WriteInner() {
   const editId = params.get("id") || "";
   const editorRef = useRef<HTMLDivElement>(null);
 
+  // 자주 쓰는 프리셋 이미지 (본문에 클릭 삽입)
+  const PRESET_IMAGES = [
+    { url: "/mirror/a/6290f94f8cd978ce.png", label: "축하합니다" },
+    { url: "/mirror/a/30a9a1108a734b7f.png", label: "이번 단계 완료" },
+    { url: "/mirror/a/e38a279d27361033.png", label: "이번 단계 완료 2" },
+  ];
+
   const [password, setPassword] = useState("");
   const [needPw, setNeedPw] = useState(false);
   const [title, setTitle] = useState("");
@@ -207,6 +214,24 @@ function WriteInner() {
           />
         </div>
 
+        {/* 자주 쓰는 이미지: 클릭하면 본문 커서 위치에 삽입 */}
+        <div style={S.presetWrap}>
+          <span style={S.presetLabel}>자주 쓰는 이미지 · 클릭하면 본문에 삽입</span>
+          <div style={S.presetRow}>
+            {PRESET_IMAGES.map((p) => (
+              <button
+                key={p.url}
+                type="button"
+                style={S.presetThumb}
+                title={`${p.label} 이미지 본문에 삽입`}
+                onClick={() => insertImages([p.url])}
+              >
+                <img src={p.url} alt={p.label} style={S.presetImg} />
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div ref={editorRef} contentEditable suppressContentEditableWarning style={S.editor} data-ph="ADD TEXT" />
 
         <label style={S.thumbLabel}>
@@ -278,6 +303,14 @@ const S: Record<string, React.CSSProperties> = {
     minHeight: 420, border: 0, padding: "4px 2px", fontSize: 17, lineHeight: 1.8,
     outline: "none", color: "#333", fontFamily: SERIF, letterSpacing: 0.3,
   },
+  presetWrap: { marginBottom: 18 },
+  presetLabel: { display: "block", fontSize: 12, color: "#999", marginBottom: 8, fontFamily: SERIF, letterSpacing: 0.5 },
+  presetRow: { display: "flex", gap: 10, flexWrap: "wrap" },
+  presetThumb: {
+    padding: 0, border: "1px solid #e2e2e2", borderRadius: 6, background: "#fafafa",
+    cursor: "pointer", width: 96, height: 72, overflow: "hidden", lineHeight: 0,
+  },
+  presetImg: { width: "100%", height: "100%", objectFit: "cover" as React.CSSProperties["objectFit"] },
   thumbLabel: { display: "block", fontSize: 13, color: "#999", marginTop: 24, fontFamily: SERIF },
   msg: { marginTop: 14, fontSize: 14, color: "#d33", fontFamily: SERIF },
 };
