@@ -21,7 +21,7 @@ export default function Header() {
           <a href="https://affinityuniverse.com">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://cdn.imweb.me/thumbnail/20230511/ecde84ca9b797.png"
+              src="/vendor/cdn.imweb.me/thumbnail/20230511/ecde84ca9b797.png"
               alt="AFFINITY UNIVERSE 어피니티 유니버스"
               width={230}
               style={{ maxWidth: "100%", height: "auto" }}

@@ -1,0 +1,45 @@
+
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicLight.eot);
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicLight.eot) format('embedded-opentype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicLight.woff2) format('woff2'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicLight.woff) format('woff'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicLight.ttf) format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicRegular.eot);
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicRegular.eot) format('embedded-opentype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicRegular.woff2) format('woff2'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicRegular.woff) format('woff'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicRegular.ttf) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicMedium.eot);
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicMedium.eot) format('embedded-opentype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicMedium.woff2) format('woff2'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicMedium.woff) format('woff'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicMedium.ttf) format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NexonLv2Gothic';
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicBold.eot);
+	src: url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicBold.eot) format('embedded-opentype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicBold.woff2) format('woff2'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicBold.woff) format('woff'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/subset/nexonv2/NEXONLv2GothicBold.ttf) format('truetype');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}

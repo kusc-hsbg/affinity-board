@@ -1,11 +1,11 @@
 /* 원본 사이트 푸터: #0063ff 배경, 중앙 정렬 링크, SNS 아이콘 열, 카피라이트 */
 const ICONS = [
-  { href: "https://www.threads.com/@affinity_universe", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/6f212a5897f51.png", alt: "Threads" },
-  { href: "https://blog.naver.com/affinityuniverse", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/5f6bf77eeee2f.png", alt: "Naver Blog" },
-  { href: "https://cafe.naver.com/veldy", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/13bdbc37c3081.png", alt: "Naver Cafe" },
-  { href: "https://www.youtube.com/@affinityuniverse", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/9728633a059a2.png", alt: "YouTube" },
-  { href: "https://pf.kakao.com/_xhbxdib", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/0e1f4ab825430.png", alt: "KakaoTalk" },
-  { href: "https://wa.me/qr/IU4IKEWU4BKAO1", img: "https://cdn.imweb.me/upload/S20220201005ab0a1d8606/599b77e977e0a.png", alt: "WhatsApp" },
+  { href: "https://www.threads.com/@affinity_universe", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/6f212a5897f51.png", alt: "Threads" },
+  { href: "https://blog.naver.com/affinityuniverse", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/5f6bf77eeee2f.png", alt: "Naver Blog" },
+  { href: "https://cafe.naver.com/veldy", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/13bdbc37c3081.png", alt: "Naver Cafe" },
+  { href: "https://www.youtube.com/@affinityuniverse", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/9728633a059a2.png", alt: "YouTube" },
+  { href: "https://pf.kakao.com/_xhbxdib", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/0e1f4ab825430.png", alt: "KakaoTalk" },
+  { href: "https://wa.me/qr/IU4IKEWU4BKAO1", img: "/vendor/cdn.imweb.me/upload/S20220201005ab0a1d8606/599b77e977e0a.png", alt: "WhatsApp" },
 ];
 
 export default function Footer() {
