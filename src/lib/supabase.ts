@@ -46,6 +46,14 @@ function dbConfigured(): boolean {
   return Boolean(supabase);
 }
 
+// 편집(관리자) 공통 비밀번호. 보안상 Vercel 환경변수 ADMIN_PASSWORD 로 덮어쓰길 권장.
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Jesus5000^^";
+
+// 편집 권한 검증: 전 학생 공통 마스터 비밀번호와 일치하는지
+export function verifyAdmin(password: string): boolean {
+  return typeof password === "string" && password === ADMIN_PASSWORD;
+}
+
 // 비밀번호 검증: students 테이블 우선, DB 미설정 시 URL 규칙(user_XXXX → XXXX) 대체
 export async function verifyStudent(
   slug: string,

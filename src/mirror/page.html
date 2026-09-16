@@ -10461,24 +10461,38 @@ body > .section_wrap { display: none !important; }
       body: JSON.stringify({ slug: slug, password: pw || "" }),
     }).then(function (r) { return r.json(); }).then(function (j) {
       if (j.ok) {
-        applyBoard(j);
-        setAdmin(mode === "edit");
-        localStorage.setItem("pw:" + slug, pw);
-        hideLogin();
+        if (mode === "edit") {
+          // 편집 로그인: 서버가 admin(마스터 pw)일 때만 편집 권한 부여
+          if (j.admin) {
+            applyBoard(j);
+            setAdmin(true);
+            localStorage.setItem("pw:" + slug, pw);
+            hideLogin();
+          } else {
+            alert("관리자 비밀번호가 아닙니다.");
+          }
+        } else {
+          // 열람: 올바른 pw면 보기 전용
+          applyBoard(j);
+          setAdmin(false);
+          localStorage.setItem("pw:" + slug, pw);
+          hideLogin();
+        }
       } else if (mode !== "silent") {
         localStorage.removeItem("pw:" + slug);
         alert(j.message || "비밀번호가 일치하지 않습니다.");
       }
     }).catch(function () {
-      // 개발 폴백(DB 미설정): pw가 user_XXXX 의 XXXX 와 같으면 통과
+      // 개발 폴백(DB 미설정): 열람은 pw가 user_XXXX 의 XXXX 와 같으면 통과.
+      // 편집(마스터 pw)은 서버에서만 검증하므로 여기선 부여하지 않음.
       var fb = slug.replace("user_", "");
-      if (pw && pw === fb && fb.length > 0) {
+      if (mode !== "edit" && pw && pw === fb && fb.length > 0) {
         applyBoard(null);
-        setAdmin(mode === "edit");
+        setAdmin(false);
         localStorage.setItem("pw:" + slug, pw);
         hideLogin();
       } else if (mode !== "silent") {
-        alert("네트워크 오류입니다.");
+        alert(mode === "edit" ? "서버에 연결하지 못했습니다." : "네트워크 오류입니다.");
       }
     }).then(function () { loadInFlight = false; });
   }

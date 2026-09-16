@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, getBoardData } from "@/lib/supabase";
+import { verifyStudent, verifyAdmin, getBoardData } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -19,18 +19,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const result = await verifyStudent(slug, String(password));
-    if (!result.ok) {
-      return NextResponse.json(
-        { ok: false, message: "비밀번호가 일치하지 않습니다." },
-        { status: 401 }
-      );
+    // 마스터(관리자) 비밀번호면 편집 권한. 아니면 학생별 비밀번호로 열람만 허용.
+    const isAdmin = verifyAdmin(password);
+    let name = "";
+    if (!isAdmin) {
+      const result = await verifyStudent(slug, String(password));
+      if (!result.ok) {
+        return NextResponse.json(
+          { ok: false, message: "비밀번호가 일치하지 않습니다." },
+          { status: 401 }
+        );
+      }
+      name = result.name;
     }
 
     const data = await getBoardData(slug);
-    if (!data.studentName && result.name) data.studentName = result.name;
+    if (!data.studentName && name) data.studentName = name;
 
-    return NextResponse.json({ ok: true, admin: true, ...data });
+    return NextResponse.json({ ok: true, admin: isAdmin, ...data });
   } catch {
     return NextResponse.json(
       { ok: false, message: "서버 오류가 발생했습니다." },

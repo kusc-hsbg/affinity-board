@@ -73,10 +73,11 @@ function WriteInner() {
   const insertTemplate = (template: (typeof TEMPLATES)[number]) => {
     const ed = editorRef.current;
     if (!ed) return;
-    if (!title.trim() && template.title) setTitle(template.title);
-    if (!category.trim() && template.category) setCategory(template.category);
+    // 기존 글을 지우고 템플릿으로 교체
+    setTitle(template.title || "");
+    setCategory(template.category || "");
+    ed.innerHTML = template.html;
     ed.focus();
-    if (!document.execCommand("insertHTML", false, template.html)) ed.innerHTML += template.html;
   };
 
   const onPickImages = async (files: FileList | null) => {

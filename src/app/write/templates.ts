@@ -34,7 +34,7 @@ const GREEN_PROGRESS_HTML = `
   <p style="text-align:justify;line-height:2;"><br /></p>
   <p style="text-align:center;"><a class="btn btn-primary" href="https://drive.google.com/drive/folders/1QMz5iRLjcU0oPE75QmujFLCOjVHEEejQ?usp=sharing" target="_blank" rel="noreferrer noopener"><span style="font-size:18px;">결과물 링크 확인하기</span></a></p>
   <p style="text-align:justify;line-height:2;"><br /></p>
-  <p><span style="font-size:18px;">한 뼘 더 성장한 준원 님은 이제 더 깊은 배움을 위해 다음 단계로 진입합니다. 새로운 변화를 맞이할 다음 여정도 정성을 다해 함께하겠습니다.</span></p>
+  <p><span style="font-size:18px;">한 뼘 더 성장한 xx 님은 이제 더 깊은 배움을 위해 다음 단계로 진입합니다. 새로운 변화를 맞이할 다음 여정도 정성을 다해 함께하겠습니다.</span></p>
   <p><span style="font-size:18px;">- 한 사람의 잠재력에 진심으로 몰입하는 곳, 어피니티 유니버스 -</span></p>
   <p style="text-align:right;line-height:1;"><br /></p>
   <p style="text-align:right;line-height:1;"><br /></p>
@@ -53,8 +53,8 @@ const ORANGE_CERTIFICATE_HTML = `
   <p style="text-align:left;"></p>
   <p style="text-align:left;"><br /></p>
   <p style="text-align:justify;line-height:2;"><br /></p>
-  <p>첫 발을 내디뎠던 날부터 오늘 수료증을 받기까지, 준원이가 보여준 열정과 성실함을 곁에서 지켜볼 수 있어 어피니티 유니버스도 참 행복했습니다.</p>
-  <p>포기하지 않고 끝까지 완주해낸 준원이의 멋진 도전을 칭찬하며, 정성껏 준비한 수료증을 이곳에 남겨둡니다. 이 수료증이 앞으로 준원이가 나아갈 길에 든든한 자신감이 되길 바랍니다. 💖</p>
+  <p>첫 발을 내디뎠던 날부터 오늘 수료증을 받기까지, xx이가 보여준 열정과 성실함을 곁에서 지켜볼 수 있어 어피니티 유니버스도 참 행복했습니다.</p>
+  <p>포기하지 않고 끝까지 완주해낸 xx이의 멋진 도전을 칭찬하며, 정성껏 준비한 수료증을 이곳에 남겨둡니다. 이 수료증이 앞으로 xx이가 나아갈 길에 든든한 자신감이 되길 바랍니다. 💖</p>
   <p style="text-align:right;line-height:1;"><br /></p>
   <p style="text-align:right;line-height:1;"><br /></p>
   <p style="text-align:right;line-height:1;"><br /></p>
@@ -84,7 +84,7 @@ export const TEMPLATES: Template[] = [
   {
     label: "템플릿 3",
     thumb: "/mirror/a/6290f94f8cd978ce.png",
-    title: "축하합니다! 준원이의 소중한 배움이 마침내 빛나는 결실을 맺었습니다.",
+    title: "축하합니다! xx이의 소중한 배움이 마침내 빛나는 결실을 맺었습니다.",
     html: ORANGE_CERTIFICATE_HTML,
   },
 ];
