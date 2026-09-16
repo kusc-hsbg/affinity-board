@@ -51,8 +51,16 @@ function WriteInner() {
     editorRef.current?.focus();
   };
 
+  // 구글 드라이브 공유 링크 → 이미지 직링크 (다른 URL은 그대로)
+  const driveDirect = (u: string) => {
+    const m =
+      u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) ||
+      u.match(/drive\.google\.com\/(?:open|uc)\?[^#]*id=([\w-]+)/);
+    return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200` : u;
+  };
+
   const insertImageUrl = () => {
-    const url = window.prompt("본문에 넣을 이미지 주소(URL)를 입력하세요");
+    const url = window.prompt("이미지 주소를 넣으세요 (구글 드라이브 공유링크도 가능)");
     if (url) insertImages([url]);
   };
 
@@ -61,7 +69,7 @@ function WriteInner() {
     if (!ed) return;
     ed.focus();
     const html = urls
-      .map((u) => `<img src="${u}" style="max-width:100%;height:auto;display:block;margin:8px 0;">`)
+      .map((u) => `<img src="${driveDirect(u)}" style="max-width:100%;height:auto;display:block;margin:8px 0;">`)
       .join("");
     // 커서 위치에 삽입, 실패 시 끝에 추가
     if (!document.execCommand("insertHTML", false, html)) {

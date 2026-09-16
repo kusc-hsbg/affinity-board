@@ -42,6 +42,15 @@ function normalizeImageUrl(url: string): string {
   return url;
 }
 
+// 본문 HTML 안의 <img src="..."> 들도 드라이브 링크면 직링크로 변환
+function normalizeBodyImages(html: string): string {
+  if (!html) return html;
+  return html.replace(
+    /(<img\b[^>]*\bsrc=")([^"]+)(")/gi,
+    (_all, pre, src, post) => pre + normalizeImageUrl(src) + post
+  );
+}
+
 function dbConfigured(): boolean {
   return Boolean(supabase);
 }
@@ -114,8 +123,8 @@ export async function getBoardData(slug: string): Promise<BoardData> {
       id: p.id,
       category: (p.category ?? "").trim(),
       title: (p.title ?? "").trim(),
-      body: p.body ?? "",
-      thumbUrl: (p.thumb_url ?? "").trim(),
+      body: normalizeBodyImages(p.body ?? ""),
+      thumbUrl: normalizeImageUrl((p.thumb_url ?? "").trim()),
       date: fmtDate(p.created_at),
     }));
   }
