@@ -8746,8 +8746,7 @@ body > .section_wrap { display: none !important; }
 			<input class="form-control" name="password" type="password" placeholder="Password">
 			<a class="btn inline-blocked btn-brand _submit" href="javascript:;">Confirm</a>
 		</form>
-		<a class="text-primary back" href="javascript:;">Back to main page</a>
-	</div>
+			</div>
 </div><div doz_type="section" class="section_wrap pc_section section_first _section_first mobile_section_first side_basic grid_gutter_0 grid_v_gutter_0 korean-text" id="s20250621c0a3cacfac54b" style="; ; background-color:rgba(0, 0, 0, 0.75);;" doz_change_mobile="Y" doz_aside="N" doz_side_width="230" doz_side_margin="0" doz_extend="N" doz_mobile_section="N" doz_mobile_hide="N" doz_header_repeat="N" doz_footer_repeat="N" doz_category="about"><div class="section_bg _section_bg _interactive_bg grayscale " style="background-image:url('https://cdn.imweb.me/thumbnail/20220221/344cae4a77ce1.jpg'); background-position:50% 50%;  background-size:cover; background-repeat: no-repeat; position: absolute;left: 0;top: 0;right: 0; bottom: 0;"></div><div class="section_bg_color _section_bg_color" style="background-color:rgba(0, 0, 0, 0.75); -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf000000,endColorstr=#bf000000);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf000000,endColorstr=#bf000000);	zoom: 1; position: absolute;left: 0;top: 0;right: 0; bottom: 0;"></div>
 		
 	
@@ -9969,7 +9968,6 @@ body > .section_wrap { display: none !important; }
 }
 
 /* 위치 */
-.goods-btn{ bottom:110px; }
 .kakao-btn{ bottom:20px; }
 
 /* =========================
@@ -10013,7 +10011,6 @@ body > .section_wrap { display: none !important; }
         border-radius:12px;
     }
 
-    .goods-btn{ bottom:75px; }
     .kakao-btn{ bottom:15px; }
 
     .floating-img-wrap{
@@ -10029,19 +10026,9 @@ body > .section_wrap { display: none !important; }
 </style>
 
 
-<a href="https://marpple.shop/kr/affinity_universe" target="_blank" class="floating-btn goods-btn korean-text">
-
-    <div class="floating-img-wrap korean-text">
-        <img src="https://cdn.imweb.me/upload/S20220201005ab0a1d8606/7c3edc396240d.png" alt="굿즈샵">
-        <div class="floating-text korean-text korean-text-Bold">굿즈샵</div>
-    </div>
-</a>
-
-
 <a href="https://pf.kakao.com/_xhbxdib" target="_blank" class="floating-btn kakao-btn korean-text">
 
-    <div class="floating-img-wrap korean-text">
-        <img src="https://cdn.imweb.me/upload/S20220201005ab0a1d8606/36cc402169f45.gif" alt="상담톡">
+    <div class="floating-img-wrap korean-text" style="background:#0063ff;">
         <div class="floating-text korean-text korean-text-Bold">상담톡</div>
     </div>
 </a>
@@ -10442,8 +10429,9 @@ body > .section_wrap { display: none !important; }
   }
 
   // 로그인 패널 표시/숨김 (원본 잠금화면을 오버레이 로그인 패널로 재사용)
-  function showLogin() {
+  function showLogin(mode) {
     if (!gate) return;
+    gateMode = mode || "edit";
     gate.style.cssText = "position:fixed;left:0;top:0;right:0;bottom:0;z-index:9998;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;";
     var inp = gate.querySelector('input[name="password"]');
     if (inp) { inp.value = ""; setTimeout(function () { inp.focus(); }, 0); }
@@ -10451,8 +10439,12 @@ body > .section_wrap { display: none !important; }
   function hideLogin() { if (gate) gate.style.display = "none"; }
 
   var loadInFlight = false;
-  // 게시판 로드. pw 없으면 공개 열람(admin:false), pw 맞으면 편집 권한(admin:true)
-  function loadBoard(pw, fromLogin) {
+  var gateMode = "view"; // 게이트 제출 성격: "view"(열람) | "edit"(편집)
+
+  // 게시판 로드. mode: "view" | "edit" | "silent"
+  //  - 올바른 pw여야 게시판이 열림(열람도 pw 필요)
+  //  - "edit" 로그인일 때만 편집 권한(admin) 부여
+  function loadBoard(pw, mode) {
     if (loadInFlight) return Promise.resolve();
     loadInFlight = true;
     return fetch("/api/board", {
@@ -10461,26 +10453,24 @@ body > .section_wrap { display: none !important; }
       body: JSON.stringify({ slug: slug, password: pw || "" }),
     }).then(function (r) { return r.json(); }).then(function (j) {
       if (j.ok) {
-        setAdmin(!!j.admin);
         applyBoard(j);
-        if (j.admin && pw) localStorage.setItem("pw:" + slug, pw);
-        else if (!j.admin) localStorage.removeItem("pw:" + slug);
-        if (fromLogin && j.admin) hideLogin();
-      } else {
-        if (pw) localStorage.removeItem("pw:" + slug);
-        if (fromLogin) alert(j.message || "비밀번호가 일치하지 않습니다.");
+        setAdmin(mode === "edit");
+        localStorage.setItem("pw:" + slug, pw);
+        hideLogin();
+      } else if (mode !== "silent") {
+        localStorage.removeItem("pw:" + slug);
+        alert(j.message || "비밀번호가 일치하지 않습니다.");
       }
     }).catch(function () {
-      // 개발 폴백(DB 미설정): pw가 user_XXXX 의 XXXX 와 같으면 편집 권한
+      // 개발 폴백(DB 미설정): pw가 user_XXXX 의 XXXX 와 같으면 통과
       var fb = slug.replace("user_", "");
       if (pw && pw === fb && fb.length > 0) {
-        setAdmin(true);
         applyBoard(null);
+        setAdmin(mode === "edit");
         localStorage.setItem("pw:" + slug, pw);
-        if (fromLogin) hideLogin();
-      } else {
-        reveal();
-        if (fromLogin) alert("네트워크 오류입니다.");
+        hideLogin();
+      } else if (mode !== "silent") {
+        alert("네트워크 오류입니다.");
       }
     }).then(function () { loadInFlight = false; });
   }
@@ -10490,10 +10480,10 @@ body > .section_wrap { display: none !important; }
   if (form) {
     var input = form.querySelector('input[name="password"]');
     var btn = form.querySelector("a._submit");
-    var go = function (e) { if (e) e.preventDefault(); loadBoard(input ? input.value : "", true); };
+    var go = function (e) { if (e) e.preventDefault(); loadBoard(input ? input.value : "", gateMode); };
     if (btn) btn.addEventListener("click", go);
     form.addEventListener("submit", go);
-    // "Back to main page" 링크 → 로그인 패널 닫기
+    // 이전 원본의 뒤로가기 링크가 남아 있으면 로그인 패널 닫기로만 처리
     var back = form.parentNode.querySelector("a.back");
     if (back) back.addEventListener("click", function (e) { e.preventDefault(); hideLogin(); });
   }
@@ -10502,7 +10492,7 @@ body > .section_wrap { display: none !important; }
   function toggleLogin(e) {
     if (e) e.preventDefault();
     if (ADMIN) { localStorage.removeItem("pw:" + slug); setAdmin(false); }
-    else { showLogin(); }
+    else { showLogin("edit"); }
   }
   Array.prototype.forEach.call(document.querySelectorAll("._login_trigger"), function (a) {
     a.addEventListener("click", toggleLogin);
@@ -10515,12 +10505,11 @@ body > .section_wrap { display: none !important; }
     ptr.style.top = e.pageY + "px";
   });
 
-  // 초기: 잠금화면 숨기고 게시판 공개 노출 + 저장된 pw 있으면 편집 권한 복원
-  if (gate) gate.style.display = "none";
-  reveal();
+  // 초기: 비밀번호를 먼저 입력해야 열람 가능. 저장된 pw는 열람 모드로만 복원.
   var qpw = new URLSearchParams(location.search).get("pw");
   var savedPw = qpw || localStorage.getItem("pw:" + slug);
-  loadBoard(savedPw || "", false);
+  if (savedPw) loadBoard(savedPw, "view");
+  else showLogin("view");
 })();
 </script>
 </body></html>

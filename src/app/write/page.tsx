@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { TEMPLATES } from "./templates";
 
 export const dynamic = "force-dynamic";
 
@@ -11,13 +12,6 @@ function WriteInner() {
   const slug = params.get("slug") || "";
   const editId = params.get("id") || "";
   const editorRef = useRef<HTMLDivElement>(null);
-
-  // 템플릿 (본문에 클릭 삽입). 템플릿 2·3의 이미지는 추후 파란색으로 교체 예정.
-  const TEMPLATES = [
-    { url: "/mirror/a/6290f94f8cd978ce.png", label: "템플릿 1" },
-    { url: "/mirror/a/30a9a1108a734b7f.png", label: "템플릿 2" },
-    { url: "/mirror/a/e38a279d27361033.png", label: "템플릿 3" },
-  ];
 
   const [password, setPassword] = useState("");
   const [needPw, setNeedPw] = useState(false);
@@ -73,6 +67,16 @@ function WriteInner() {
     if (!document.execCommand("insertHTML", false, html)) {
       ed.innerHTML += html;
     }
+  };
+
+  // 템플릿(글 서식 구조 포함 본문 HTML)을 커서 위치에 삽입
+  const insertTemplate = (template: (typeof TEMPLATES)[number]) => {
+    const ed = editorRef.current;
+    if (!ed) return;
+    if (!title.trim() && template.title) setTitle(template.title);
+    if (!category.trim() && template.category) setCategory(template.category);
+    ed.focus();
+    if (!document.execCommand("insertHTML", false, template.html)) ed.innerHTML += template.html;
   };
 
   const onPickImages = async (files: FileList | null) => {
@@ -214,19 +218,19 @@ function WriteInner() {
           />
         </div>
 
-        {/* 템플릿: 클릭하면 본문 커서 위치에 삽입 */}
+        {/* 템플릿: 클릭하면 글 서식 구조(본문)를 커서 위치에 삽입 */}
         <div style={S.presetWrap}>
           <span style={S.presetLabel}>템플릿 · 클릭하면 본문에 삽입</span>
           <div style={S.presetRow}>
             {TEMPLATES.map((t) => (
               <button
-                key={t.url}
+                key={t.label}
                 type="button"
                 style={S.presetThumb}
                 title={`${t.label} 본문에 삽입`}
-                onClick={() => insertImages([t.url])}
+                onClick={() => insertTemplate(t)}
               >
-                <img src={t.url} alt={t.label} style={S.presetImg} />
+                <img src={t.thumb} alt={t.label} style={S.presetImg} />
                 <span style={S.presetName}>{t.label}</span>
               </button>
             ))}
