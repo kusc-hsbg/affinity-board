@@ -6839,15 +6839,6 @@ body > .section_wrap { display: none !important; }
   #s20240715eea57eed99f53,
   #s20240715eea57eed99f53 > .section_bg_color { background-color: #fff !important; }
 
-  /* 헤더 햄버거/검색 아이콘 제거: PC + 모바일 */
-  #w20220412d85acf907644b,
-  #w20220412324b3eb4da580,
-  #w20220412e6aded1eb2c1e,
-  #w20220412adf866ec8255d { display: none !important; }
-
-  /* 소개 문구 제거 */
-  #w20250608d72af47edea5f { display: none !important; }
-
   /* user 페이지 좌우 여백: 섹션 배경(절대위치)은 full-bleed 유지, 콘텐츠만 안쪽으로 */
   .section_wrap > main > .inside { padding-left: 18px !important; padding-right: 18px !important; }
   /* 파란 푸터 위젯은 가장자리까지 꽉 차게(full-bleed) 유지 */
@@ -6856,6 +6847,14 @@ body > .section_wrap { display: none !important; }
   /* 가로 오버플로 안전장치 */
   html, body { overflow-x: hidden; }
 }
+
+/* 헤더 햄버거(MENU)/검색 아이콘 제거 + 인트로/하단 문구 숨김: 전 화면폭 (미디어쿼리 밖, 전역) */
+#w20220412d85acf907644b, #w20220412324b3eb4da580,
+#w20220412e6aded1eb2c1e, #w20220412adf866ec8255d,
+#w20250608d72af47edea5f { display: none !important; }
+/* ID가 바뀌어 복제돼도 확실히: 메뉴/검색 버튼 위젯 전부 숨김 */
+[data-widget-type="inline_menu_btn"],
+[data-widget-type="inline_search_btn"] { display: none !important; }
 </style>
 </head>
 <body class="doz_sys _body_menu_m202506218946562b22867 new_header_overlay_mobile page new_header_site korean-text" style=";" id="doz_body">
@@ -9709,7 +9708,7 @@ body > .section_wrap { display: none !important; }
 	<div id="padding_w202507138ae752eedfbf6" style="width:100%; min-height:1px; height:30px; "></div>
 </div>
 </div></div></div></div><div doz_type="row" doz_grid="12" class="doz_row korean-text"><div doz_type="grid" doz_grid="12" class="col-dz col-dz-12 korean-text"><div doz_type="widget" id="w20250608d72af47edea5f" class="korean-text"><div class="_widget_data animated wg_animated korean-text" data-widget-name="텍스트" data-widget-type="text" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="N" style="visibility: hidden; animation-duration: 0.7s; animation-delay: 0s;">	<div doz_type="text" class="widget _text_wrap widget_text_wrap fr-view default_padding korean-text" id="text_w20250608d72af47edea5f">
-		<div class="text-table korean-text"><div class="korean-text"><h6 class="korean-text"><span style="font-size: 36px;" class="korean-text"><span style="color: rgb(0, 0, 0);" class="korean-text"><strong class="korean-text korean-text-Bold">수강생 작품과 수업 현황을 한 번에!</strong></span></span></h6><h6 class="korean-text"><span style="color: rgb(0, 0, 0);" class="korean-text"><br><span style="font-size: 20px;" class="korean-text">공식 인스타그램, 유튜브, 블로그 채널을 통해</span></span></h6><p class="korean-text"><span style="color: rgb(0, 0, 0);" class="korean-text"><span style="font-size: 20px;" class="korean-text">학습 과정과 결과를 기록하고 있습니다.</span></span></p></div></div>
+		<div class="text-table korean-text"></div>
 	</div>
 	
 </div></div></div></div><div doz_type="row" doz_grid="12" class="doz_row"><div doz_type="grid" doz_grid="1" doz_clear="Y" class="col-dz col-dz-1   col-xdz-clear"><div doz_type="widget" id="w2025060836ba27ec7b0b2"><div class="_widget_data  animated wg_animated " data-widget-name="아이콘" data-widget-type="icon" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="N"><div class="widget icon  no_bg" style="text-align: center">
