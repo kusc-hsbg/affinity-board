@@ -10024,6 +10024,18 @@ body > .section_wrap { display: none !important; }
         top:2px;
     }
 }
+
+/* 모바일 전용 로그인 버튼 (PC는 헤더 LOGIN 사용). 편집 로그인/로그아웃 토글 */
+.mobile-login-btn{ display:none; }
+@media(max-width:991px){
+  .mobile-login-btn{
+    position:fixed; left:10px; bottom:15px; z-index:9999;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:#0063ff; color:#fff; border-radius:20px;
+    padding:9px 16px; font-size:12px; font-weight:800;
+    text-decoration:none; box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+}
 </style>
 
 
@@ -10033,6 +10045,8 @@ body > .section_wrap { display: none !important; }
         <div class="floating-text korean-text korean-text-Bold">상담톡</div>
     </div>
 </a>
+
+<a href="javascript:;" class="mobile-login-btn _login_trigger korean-text"><span class="text">LOGIN</span></a>
 
 
 
