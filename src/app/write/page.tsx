@@ -17,11 +17,9 @@ function WriteInner() {
   const [needPw, setNeedPw] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
-  const [thumb, setThumb] = useState<File | null>(null);
+  const [thumbUrl, setThumbUrl] = useState("");
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const imgInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -60,7 +58,7 @@ function WriteInner() {
   };
 
   const insertImageUrl = () => {
-    const url = window.prompt("이미지 주소를 넣으세요 (구글 드라이브 공유링크도 가능)");
+    const url = window.prompt("구글 드라이브 공유링크(또는 이미지 주소)를 붙여넣으세요");
     if (url) insertImages([url]);
   };
 
@@ -88,31 +86,6 @@ function WriteInner() {
     ed.focus();
   };
 
-  const onPickImages = async (files: FileList | null) => {
-    if (!files || !files.length || !slug) return;
-    setUploading(true);
-    setMsg(`이미지 ${files.length}장 업로드 중...`);
-    const fd = new FormData();
-    fd.append("slug", slug);
-    fd.append("password", password);
-    Array.from(files).forEach((f) => fd.append("images", f));
-    try {
-      const r = await fetch("/api/board/image", { method: "POST", body: fd });
-      const j = await r.json();
-      if (j.ok && j.urls?.length) {
-        insertImages(j.urls);
-        setMsg(`이미지 ${j.urls.length}장 추가됨`);
-      } else {
-        setMsg(j.message || "이미지 업로드에 실패했습니다.");
-      }
-    } catch {
-      setMsg("이미지 업로드 중 네트워크 오류입니다.");
-    } finally {
-      setUploading(false);
-      if (imgInputRef.current) imgInputRef.current.value = "";
-    }
-  };
-
   const save = async () => {
     if (!slug) return;
     const body = editorRef.current?.innerHTML || "";
@@ -129,7 +102,7 @@ function WriteInner() {
     fd.append("category", category);
     fd.append("body", body);
     if (editId) fd.append("id", editId);
-    if (thumb) fd.append("thumb", thumb);
+    if (thumbUrl.trim()) fd.append("thumbUrl", driveDirect(thumbUrl.trim()));
     try {
       const r = await fetch("/api/board/post", { method: editId ? "PUT" : "POST", body: fd });
       const j = await r.json();
@@ -210,21 +183,10 @@ function WriteInner() {
           <button style={S.tb} title="번호 목록" onClick={() => exec("insertOrderedList")}>1.</button>
           <button style={S.tb} title="점 목록" onClick={() => exec("insertUnorderedList")}>•</button>
           <span style={S.divider} />
-          <button style={S.tb} disabled={uploading} title="이미지 추가" onClick={() => imgInputRef.current?.click()}>
-            {uploading ? "…" : "🖼"}
-          </button>
-          <button style={S.tb} title="이미지 URL" onClick={insertImageUrl}>🔗</button>
+          <button style={S.tb} title="이미지 추가 (구글 드라이브 공유링크)" onClick={insertImageUrl}>🖼</button>
           <span style={S.divider} />
           <button style={S.tb} title="실행 취소" onClick={() => exec("undo")}>↺</button>
           <button style={S.tb} title="다시 실행" onClick={() => exec("redo")}>↻</button>
-          <input
-            ref={imgInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            style={{ display: "none" }}
-            onChange={(e) => onPickImages(e.target.files)}
-          />
         </div>
 
         {/* 템플릿: 클릭하면 글 서식 구조(본문)를 커서 위치에 삽입 */}
@@ -249,7 +211,14 @@ function WriteInner() {
         <div ref={editorRef} contentEditable suppressContentEditableWarning style={S.editor} data-ph="ADD TEXT" />
 
         <label style={S.thumbLabel}>
-          대표 이미지(썸네일, 선택): <input type="file" accept="image/*" onChange={(e) => setThumb(e.target.files?.[0] || null)} />
+          대표 이미지(썸네일) · 구글 드라이브 공유링크 (선택)
+          <input
+            style={{ ...S.lineInput, marginTop: 6 }}
+            type="url"
+            placeholder="https://drive.google.com/file/d/..."
+            value={thumbUrl}
+            onChange={(e) => setThumbUrl(e.target.value)}
+          />
         </label>
 
         {msg && <div style={S.msg}>{msg}</div>}
