@@ -99,6 +99,19 @@ function fmtDate(iso: string): string {
   return `${d.getFullYear()}-${mm}-${dd}`;
 }
 
+// 루트 페이지용: 등록된 학생 목록(이름/주소). 이름 없는 행은 제외.
+export async function listStudents(): Promise<{ slug: string; name: string }[]> {
+  if (!dbConfigured()) return [];
+  const { data } = await supabase!
+    .from("students")
+    .select("slug, name")
+    .order("name", { ascending: true });
+  if (!data) return [];
+  return data
+    .map((r) => ({ slug: (r.slug ?? "").trim(), name: (r.name ?? "").trim() }))
+    .filter((r) => /^user_[A-Za-z0-9]+$/.test(r.slug) && r.name);
+}
+
 export async function getBoardData(slug: string): Promise<BoardData> {
   const data: BoardData = { studentName: "", settings: {}, items: [], posts: [] };
   if (!dbConfigured()) return data;

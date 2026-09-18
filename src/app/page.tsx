@@ -1,9 +1,10 @@
-// 루트 페이지: 학생 이름 링크만 노출 (그 외 아무것도 표시하지 않음)
-const STUDENTS: { name: string; slug: string }[] = [
-  { name: "최준원", slug: "user_090406" },
-];
+// 루트 페이지: 등록된 학생 이름을 모두 링크로 표시 (Supabase에서 자동 조회)
+import { listStudents } from "@/lib/supabase";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const students = await listStudents();
   return (
     <main
       style={{
@@ -12,20 +13,30 @@ export default function Home() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 18,
+        padding: "60px 20px",
         background: "#fff",
         fontFamily: "'Times New Roman', Georgia, 'Nanum Myeongjo', serif",
       }}
     >
-      {STUDENTS.map((s) => (
-        <a
-          key={s.slug}
-          href={"/" + s.slug}
-          style={{ fontSize: 22, letterSpacing: 1, color: "#111", textDecoration: "none" }}
-        >
-          {s.name}
-        </a>
-      ))}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "14px 26px",
+          maxWidth: 900,
+        }}
+      >
+        {students.map((s) => (
+          <a
+            key={s.slug}
+            href={"/" + s.slug}
+            style={{ fontSize: 20, letterSpacing: 1, color: "#111", textDecoration: "none" }}
+          >
+            {s.name}
+          </a>
+        ))}
+      </div>
     </main>
   );
 }
