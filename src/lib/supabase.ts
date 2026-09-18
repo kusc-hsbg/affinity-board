@@ -132,14 +132,23 @@ export async function getBoardData(slug: string): Promise<BoardData> {
   ]);
 
   if (postsRes && !postsRes.error && postsRes.data) {
-    data.posts = postsRes.data.map((p) => ({
-      id: p.id,
-      category: (p.category ?? "").trim(),
-      title: (p.title ?? "").trim(),
-      body: normalizeBodyImages(p.body ?? ""),
-      thumbUrl: normalizeImageUrl((p.thumb_url ?? "").trim()),
-      date: fmtDate(p.created_at),
-    }));
+    data.posts = postsRes.data.map((p) => {
+      const body = normalizeBodyImages(p.body ?? "");
+      let thumbUrl = normalizeImageUrl((p.thumb_url ?? "").trim());
+      // 썸네일이 없으면 본문 첫 이미지를 카드 썸네일로 사용 (템플릿 글 등)
+      if (!thumbUrl) {
+        const m = body.match(/<img\b[^>]*\bsrc="([^"]+)"/i);
+        if (m) thumbUrl = m[1];
+      }
+      return {
+        id: p.id,
+        category: (p.category ?? "").trim(),
+        title: (p.title ?? "").trim(),
+        body,
+        thumbUrl,
+        date: fmtDate(p.created_at),
+      };
+    });
   }
 
   if (studentRes.data) data.studentName = (studentRes.data.name ?? "").trim();
