@@ -4177,154 +4177,302 @@ padding-top: 0 !important;
 	window.USE_OMS = true;
 })();
 </script>
-<meta name="naver-site-verification" content="3673436264321f80a00c4a6c29a6a3b598de3c11" />
-
-<style>
-  @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Pretendard-SemiBold';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Pretendard-Bold';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Pretendard-ExtraBold';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff') format('woff');
-    font-weight: 800;
-    font-style: normal;
-  }
-  
-  @font-face {
-  font-family: "Cinzel";
-  src: url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
-  font-weight: normal;
-  font-style: normal;
-}
-  
-  * {
-    font-family: 'Cinzel'!important;
-  }
-  
-  /* 한글 폰트 설정 */
-  .korean-text {
-    font-family: 'Pretendard-Regular'!important;
-  }
-  .korean-text-Bold {
-    font-family: 'Pretendard-Bold'!important;
-  }
-</style>
-
-<script>
-  //Korean Font
-    document.addEventListener("DOMContentLoaded", function() {
-      function applyKoreanFont(element) {
-        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-        if (koreanRegex.test(element.textContent)) {
-          element.classList.add('korean-text');
-		  if (window.getComputedStyle(element).fontWeight >= 600) {
-          element.classList.add('korean-text-Bold');
-        }
-        }
-      }
-
-      const elements = document.querySelectorAll('*');
-      elements.forEach(applyKoreanFont);
-    });
-  
-  // Color Fix #0063ff
-  document.addEventListener("DOMContentLoaded", function() {
-    // 모든 스타일 시트를 순회
-    for (let i = 0; i < document.styleSheets.length; i++) {
-        let sheet = document.styleSheets[i];
-        try {
-            let rules = sheet.cssRules || sheet.rules;
-            // 모든 규칙을 순회
-            for (let j = 0; j < rules.length; j++) {
-                let rule = rules[j];
-                if (rule.style && rule.style.color === '#3247E9') {
-                    rule.style.color = '#0063ff';
-                }
-			    if (rule.style && rule.style.color === '#3247e9') {
-                    rule.style.color = '#0063ff';
-                }
-            }
-        } catch (e) {
-            // CORS 등으로 접근할 수 없는 스타일 시트가 있을 경우 오류를 무시
-            console.warn("Cannot access stylesheet: " + sheet.href);
-        }
-    }
-
-    // 인라인 스타일이 있는 요소들을 검사하여 변경
-    let elements = document.querySelectorAll('*');
-    elements.forEach(function(el) {
-        let color = window.getComputedStyle(el).color;
-        // #3247E9는 rgb(50, 71, 233)로 변환되므로 이를 고려하여 체크
-        if (color === 'rgb(50, 71, 233)') {
-            el.style.color = '#0063ff';
-        }
-    });
-});
-
-// Background Color Fix #0063ff
-document.addEventListener("DOMContentLoaded", function() {
-    // 모든 요소를 선택하여 인라인 스타일을 변경
-    let elements = document.querySelectorAll('*');
-    elements.forEach(function(el) {
-        let backgroundColor = window.getComputedStyle(el).backgroundColor;
-        if (backgroundColor === 'rgb(50, 71, 233)') {
-            el.style.backgroundColor = '#0063ff';
-        }
-    });
-});
-
-//Border Color Fix #0063ff
-document.addEventListener("DOMContentLoaded", function() {
-    // 모든 요소를 선택하여 인라인 스타일을 변경
-    let elements = document.querySelectorAll('*');
-    elements.forEach(function(el) {
-        let computedStyle = window.getComputedStyle(el);
-
-        // 배경색 검사 및 변경
-        if (computedStyle.backgroundColor === '#3247E9' || computedStyle.backgroundColor === 'rgb(50, 71, 233)') {
-            el.style.backgroundColor = '#0063ff';
-        }
-
-        // 테두리 색상 검사 및 변경
-        if (computedStyle.borderColor === '#3247E9' || computedStyle.borderColor === 'rgb(50, 71, 233)') {
-            el.style.borderColor = '#0063ff';
-        }
-
-        // 개별적인 테두리 색상 검사 및 변경 (위, 오른쪽, 아래, 왼쪽)
-        if (computedStyle.borderTopColor === '#3247E9' || computedStyle.borderTopColor === 'rgb(50, 71, 233)') {
-            el.style.borderTopColor = '#0063ff';
-        }
-        if (computedStyle.borderRightColor === '#3247E9' || computedStyle.borderRightColor === 'rgb(50, 71, 233)') {
-            el.style.borderRightColor = '#0063ff';
-        }
-        if (computedStyle.borderBottomColor === '#3247E9' || computedStyle.borderBottomColor === 'rgb(50, 71, 233)') {
-            el.style.borderBottomColor = '#0063ff';
-        }
-        if (computedStyle.borderLeftColor === '#3247E9' || computedStyle.borderLeftColor === 'rgb(50, 71, 233)') {
-            el.style.borderLeftColor = '#0063ff';
-        }
-    });
-});
-
-
+<meta name="naver-site-verification" content="3673436264321f80a00c4a6c29a6a3b598de3c11" />
+
+
+
+<style>
+
+  @font-face {
+
+    font-family: 'Pretendard-Regular';
+
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+
+    font-weight: 400;
+
+    font-style: normal;
+
+  }
+
+
+
+  @font-face {
+
+    font-family: 'Pretendard-SemiBold';
+
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+
+    font-weight: 600;
+
+    font-style: normal;
+
+  }
+
+  
+
+  @font-face {
+
+    font-family: 'Pretendard-Bold';
+
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+
+    font-weight: 700;
+
+    font-style: normal;
+
+  }
+
+
+
+  @font-face {
+
+    font-family: 'Pretendard-ExtraBold';
+
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff') format('woff');
+
+    font-weight: 800;
+
+    font-style: normal;
+
+  }
+
+  
+
+  @font-face {
+
+  font-family: "Cinzel";
+
+  src: url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+
+  font-weight: normal;
+
+  font-style: normal;
+
+}
+
+  
+
+  * {
+
+    font-family: 'Cinzel'!important;
+
+  }
+
+  
+
+  /* 한글 폰트 설정 */
+
+  .korean-text {
+
+    font-family: 'Pretendard-Regular'!important;
+
+  }
+
+  .korean-text-Bold {
+
+    font-family: 'Pretendard-Bold'!important;
+
+  }
+
+</style>
+
+
+
+<script>
+
+  //Korean Font
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+      function applyKoreanFont(element) {
+
+        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+        if (koreanRegex.test(element.textContent)) {
+
+          element.classList.add('korean-text');
+
+		  if (window.getComputedStyle(element).fontWeight >= 600) {
+
+          element.classList.add('korean-text-Bold');
+
+        }
+
+        }
+
+      }
+
+
+
+      const elements = document.querySelectorAll('*');
+
+      elements.forEach(applyKoreanFont);
+
+    });
+
+  
+
+  // Color Fix #0063ff
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+    // 모든 스타일 시트를 순회
+
+    for (let i = 0; i < document.styleSheets.length; i++) {
+
+        let sheet = document.styleSheets[i];
+
+        try {
+
+            let rules = sheet.cssRules || sheet.rules;
+
+            // 모든 규칙을 순회
+
+            for (let j = 0; j < rules.length; j++) {
+
+                let rule = rules[j];
+
+                if (rule.style && rule.style.color === '#3247E9') {
+
+                    rule.style.color = '#0063ff';
+
+                }
+
+			    if (rule.style && rule.style.color === '#3247e9') {
+
+                    rule.style.color = '#0063ff';
+
+                }
+
+            }
+
+        } catch (e) {
+
+            // CORS 등으로 접근할 수 없는 스타일 시트가 있을 경우 오류를 무시
+
+            console.warn("Cannot access stylesheet: " + sheet.href);
+
+        }
+
+    }
+
+
+
+    // 인라인 스타일이 있는 요소들을 검사하여 변경
+
+    let elements = document.querySelectorAll('*');
+
+    elements.forEach(function(el) {
+
+        let color = window.getComputedStyle(el).color;
+
+        // #3247E9는 rgb(50, 71, 233)로 변환되므로 이를 고려하여 체크
+
+        if (color === 'rgb(50, 71, 233)') {
+
+            el.style.color = '#0063ff';
+
+        }
+
+    });
+
+});
+
+
+
+// Background Color Fix #0063ff
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    // 모든 요소를 선택하여 인라인 스타일을 변경
+
+    let elements = document.querySelectorAll('*');
+
+    elements.forEach(function(el) {
+
+        let backgroundColor = window.getComputedStyle(el).backgroundColor;
+
+        if (backgroundColor === 'rgb(50, 71, 233)') {
+
+            el.style.backgroundColor = '#0063ff';
+
+        }
+
+    });
+
+});
+
+
+
+//Border Color Fix #0063ff
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    // 모든 요소를 선택하여 인라인 스타일을 변경
+
+    let elements = document.querySelectorAll('*');
+
+    elements.forEach(function(el) {
+
+        let computedStyle = window.getComputedStyle(el);
+
+
+
+        // 배경색 검사 및 변경
+
+        if (computedStyle.backgroundColor === '#3247E9' || computedStyle.backgroundColor === 'rgb(50, 71, 233)') {
+
+            el.style.backgroundColor = '#0063ff';
+
+        }
+
+
+
+        // 테두리 색상 검사 및 변경
+
+        if (computedStyle.borderColor === '#3247E9' || computedStyle.borderColor === 'rgb(50, 71, 233)') {
+
+            el.style.borderColor = '#0063ff';
+
+        }
+
+
+
+        // 개별적인 테두리 색상 검사 및 변경 (위, 오른쪽, 아래, 왼쪽)
+
+        if (computedStyle.borderTopColor === '#3247E9' || computedStyle.borderTopColor === 'rgb(50, 71, 233)') {
+
+            el.style.borderTopColor = '#0063ff';
+
+        }
+
+        if (computedStyle.borderRightColor === '#3247E9' || computedStyle.borderRightColor === 'rgb(50, 71, 233)') {
+
+            el.style.borderRightColor = '#0063ff';
+
+        }
+
+        if (computedStyle.borderBottomColor === '#3247E9' || computedStyle.borderBottomColor === 'rgb(50, 71, 233)') {
+
+            el.style.borderBottomColor = '#0063ff';
+
+        }
+
+        if (computedStyle.borderLeftColor === '#3247E9' || computedStyle.borderLeftColor === 'rgb(50, 71, 233)') {
+
+            el.style.borderLeftColor = '#0063ff';
+
+        }
+
+    });
+
+});
+
+
+
+
+
 </script><script type="module">
     import {} from 'https://static.imweb.me/vendor/js/deploy_strategy.js';
 
@@ -4382,65 +4530,124 @@ document.addEventListener("DOMContentLoaded", function() {
 <body class="page_ready  doz_sys  _body_menu_m202606194f6a76b42e996  new_header_overlay  new_header_overlay_mobile  page  new_header_site  " 	style=";"  id="doz_body">
 
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        overflow: hidden;
-    }
-
-
-
-    #canvas-container {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999; /* Ensures the canvas is on top */
-        pointer-events: none; /* Makes sure the canvas does not interfere with pointer events */
-    }
-
-</style>
-
-<main>
-    <div id="canvas-container"></div>
-</main>
-
-
-
-
-
-<style>
-#doz_body {
- position: relative;
-}
-.pointer {
- z-index: 999999;
- margin-top: 16px;
- margin-left: 16px;
- position: absolute;
- width: 32px;
- height: 32px;
- border-radius: 40px;
- border: 2px solid #0063FF;
- background: #0063FF;
-}
-@media screen and (max-width: 1200px) {
- .pointer {
-     display: none !important;
- }
-}
-</style>
-
-<html>
- <div class="pointer"></div>
-</html>
-
+<style>
+
+    * {
+
+        box-sizing: border-box;
+
+        margin: 0;
+
+        padding: 0;
+
+    }
+
+
+
+    body {
+
+        overflow: hidden;
+
+    }
+
+
+
+
+
+
+
+    #canvas-container {
+
+        position: fixed;
+
+        left: 0;
+
+        top: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        z-index: 9999; /* Ensures the canvas is on top */
+
+        pointer-events: none; /* Makes sure the canvas does not interfere with pointer events */
+
+    }
+
+
+
+</style>
+
+
+
+<main>
+
+    <div id="canvas-container"></div>
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+#doz_body {
+
+ position: relative;
+
+}
+
+.pointer {
+
+ z-index: 999999;
+
+ margin-top: 16px;
+
+ margin-left: 16px;
+
+ position: absolute;
+
+ width: 32px;
+
+ height: 32px;
+
+ border-radius: 40px;
+
+ border: 2px solid #0063FF;
+
+ background: #0063FF;
+
+}
+
+@media screen and (max-width: 1200px) {
+
+ .pointer {
+
+     display: none !important;
+
+ }
+
+}
+
+</style>
+
+
+
+<html>
+
+ <div class="pointer"></div>
+
+</html>
+
+
+
 
 
 <div id="site_alarm_slidemenu_container" class="notification-canvas-container">
@@ -6879,122 +7086,228 @@ document.addEventListener("DOMContentLoaded", function() {
 	data-currency-thousand-char=","
 	data-relative-option-price="N">
 	
-<script type="module" crossorigin="" src="/_/fo-shopping/assets/magnet-node-webcomponent-LRwfbqOh.js"></script>
-<script type="module" crossorigin="" src="/_/fo-shopping/assets/preload-helper-0WjokmmD.js"></script>
-<script type="module" crossorigin="" src="/_/fo-shopping/assets/accent-palette-Cem6D2nc.js"></script>
-<script type="module" crossorigin="" src="/_/fo-shopping/assets/index-DICYwk_a.js"></script><!-- 하위 호환 alias — 구 엔트리의 DOM 계약(요소명·id)을 유지한 채 modal 부트스트랩을 싣는다.
+<script type="module" crossorigin="" src="/_/fo-shoppinghttps://static.imweb.me/magnet-node-webcomponent-LRwfbqOh.js"></script>
+<script type="module" crossorigin="" src="/_/fo-shoppinghttps://static.imweb.me/preload-helper-0WjokmmD.js"></script>
+<script type="module" crossorigin="" src="/_/fo-shoppinghttps://static.imweb.me/accent-palette-Cem6D2nc.js"></script>
+<script type="module" crossorigin="" src="/_/fo-shoppinghttps://static.imweb.me/index-DICYwk_a.js"></script><!-- 하위 호환 alias — 구 엔트리의 DOM 계약(요소명·id)을 유지한 채 modal 부트스트랩을 싣는다.
      호스트 셸(add_to_cart_modal_shell.sub)이 modal.magnet.json 으로 옮겨가면 제거 -->
 <fo-shopping-add-to-cart id="fo-shopping-add-to-cart" data-clay-theme="light-only" data-shadow-host=""><template shadowrootmode="open">
     <div data-magnet-style-container="" id="do-not-use" style="width: 0; height: 0; position: absolute; top: 0"></div>
     <div data-root=""></div>
   </template></fo-shopping-add-to-cart>
 </magnet-shell>
-<style>
-/* =========================
-공통
-========================= */
-.floating-btn{
-    position:fixed;
-    right:20px;
-    width:78px;
-
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 6px 18px rgba(0,0,0,.12);
-
-    z-index:999;
-    text-decoration:none;
-}
-
-/* 위치 */
-.goods-btn{ bottom:110px; }
-.kakao-btn{ bottom:20px; }
-
-/* =========================
-공통 이미지 오버레이 박스
-========================= */
-.floating-img-wrap{
-    position:relative;
-    width:78px;
-    height:78px;
-}
-
-.floating-img-wrap img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-/* 이미지 위 텍스트 - 위쪽 기준 */
-.floating-text{
-    position:absolute;
-    left:50%;
-    top:8px;
-    transform:translateX(-50%);
-
-    font-size:12px;
-    font-weight:800;
-    color:#fff;
-
-    white-space:nowrap;
-}
-
-/* =========================
-모바일
-========================= */
-@media(max-width:768px){
-
-    .floating-btn{
-        right:10px;
-        width:50px;
-        border-radius:12px;
-    }
-
-    .goods-btn{ bottom:75px; }
-    .kakao-btn{ bottom:15px; }
-
-    .floating-img-wrap{
-        width:50px;
-        height:50px;
-    }
-
-    .floating-text{
-        font-size:10px;
-        top:2px;
-    }
-}
-</style>
-
-
-<a href="https://marpple.shop/kr/affinity_universe"
-   target="_blank"
-   class="floating-btn goods-btn">
-
-    <div class="floating-img-wrap">
-        <img src="https://vendor-cdn.imweb.me/upload/S20220201005ab0a1d8606/7c3edc396240d.png"
-             alt="굿즈샵">
-        <div class="floating-text">굿즈샵</div>
-    </div>
-</a>
-
-
-<a href="https://pf.kakao.com/_xhbxdib"
-   target="_blank"
-   class="floating-btn kakao-btn">
-
-    <div class="floating-img-wrap">
-        <img src="https://vendor-cdn.imweb.me/upload/S20220201005ab0a1d8606/36cc402169f45.gif"
-             alt="상담톡">
-        <div class="floating-text">상담톡</div>
-    </div>
-</a>
-
-
-
-
-
-
+<style>
+
+/* =========================
+
+공통
+
+========================= */
+
+.floating-btn{
+
+    position:fixed;
+
+    right:20px;
+
+    width:78px;
+
+
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+
+
+
+    z-index:999;
+
+    text-decoration:none;
+
+}
+
+
+
+/* 위치 */
+
+.goods-btn{ bottom:110px; }
+
+.kakao-btn{ bottom:20px; }
+
+
+
+/* =========================
+
+공통 이미지 오버레이 박스
+
+========================= */
+
+.floating-img-wrap{
+
+    position:relative;
+
+    width:78px;
+
+    height:78px;
+
+}
+
+
+
+.floating-img-wrap img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+
+
+/* 이미지 위 텍스트 - 위쪽 기준 */
+
+.floating-text{
+
+    position:absolute;
+
+    left:50%;
+
+    top:8px;
+
+    transform:translateX(-50%);
+
+
+
+    font-size:12px;
+
+    font-weight:800;
+
+    color:#fff;
+
+
+
+    white-space:nowrap;
+
+}
+
+
+
+/* =========================
+
+모바일
+
+========================= */
+
+@media(max-width:768px){
+
+
+
+    .floating-btn{
+
+        right:10px;
+
+        width:50px;
+
+        border-radius:12px;
+
+    }
+
+
+
+    .goods-btn{ bottom:75px; }
+
+    .kakao-btn{ bottom:15px; }
+
+
+
+    .floating-img-wrap{
+
+        width:50px;
+
+        height:50px;
+
+    }
+
+
+
+    .floating-text{
+
+        font-size:10px;
+
+        top:2px;
+
+    }
+
+}
+
+</style>
+
+
+
+
+
+<a href="https://marpple.shop/kr/affinity_universe"
+
+   target="_blank"
+
+   class="floating-btn goods-btn">
+
+
+
+    <div class="floating-img-wrap">
+
+        <img src="https://vendor-cdn.imweb.me/upload/S20220201005ab0a1d8606/7c3edc396240d.png"
+
+             alt="굿즈샵">
+
+        <div class="floating-text">굿즈샵</div>
+
+    </div>
+
+</a>
+
+
+
+
+
+<a href="https://pf.kakao.com/_xhbxdib"
+
+   target="_blank"
+
+   class="floating-btn kakao-btn">
+
+
+
+    <div class="floating-img-wrap">
+
+        <img src="https://vendor-cdn.imweb.me/upload/S20220201005ab0a1d8606/36cc402169f45.gif"
+
+             alt="상담톡">
+
+        <div class="floating-text">상담톡</div>
+
+    </div>
+
+</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script  src='https://vendor-cdn.imweb.me/js/jquery-ui.design.js?1627517437'></script>
 <script  src='https://vendor-cdn.imweb.me/js/lodash.min.js?1771820111'></script>
 <script  src='https://vendor-cdn.imweb.me/js/axios.min.js?1689048978'></script>
@@ -7722,39 +8035,71 @@ LOCALIZE.타이틀_알림설정 = function(){ return LOCALIZE.convArguments("Not
 <magnet-shell data-manifest-url="/_/fo-chat/index.magnet.json">
 	</magnet-shell>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-<script>
-var pointSize = $(".pointer").width() / 2;
- $("#doz_body").mousemove(function(e) {
-  $('.pointer').css("top", e.pageY - pointSize);
-  $('.pointer').css("left", e.pageX - pointSize);
-  $('.pointer').fadeIn();
-}); // Mouse Following
-// Basic
-$(".btn,input,a,textarea").on("mouseover", function() {
- $('.pointer').css({
-  "width": "68px",
-  "height": "68px",
-  "background": "none",
-  "transition-property": "width,height,background",
-  "transition-duration": "0.5s"
- });
-}); // Hover
- $(".btn,input,a,textarea").on("mouseout", function() {
-  $('.pointer').css({
-   "width": "32px",
-   "height": "32px",
-   "background": "#0063FF",
-   "transition-property": "width,height,background",
-   "transition-duration": "0.5s"
-  });
- }); // Mouseout
+<script>
 
-</script><script>
-document.querySelectorAll('#doz_footer_wrap .footer-company-info__item').forEach(el => {
-  if (/^(사업장주소|연락처):/.test(el.textContent.trim())) {
-    el.style.setProperty('display', 'none', 'important');
-  }
-});
+var pointSize = $(".pointer").width() / 2;
+
+ $("#doz_body").mousemove(function(e) {
+
+  $('.pointer').css("top", e.pageY - pointSize);
+
+  $('.pointer').css("left", e.pageX - pointSize);
+
+  $('.pointer').fadeIn();
+
+}); // Mouse Following
+
+// Basic
+
+$(".btn,input,a,textarea").on("mouseover", function() {
+
+ $('.pointer').css({
+
+  "width": "68px",
+
+  "height": "68px",
+
+  "background": "none",
+
+  "transition-property": "width,height,background",
+
+  "transition-duration": "0.5s"
+
+ });
+
+}); // Hover
+
+ $(".btn,input,a,textarea").on("mouseout", function() {
+
+  $('.pointer').css({
+
+   "width": "32px",
+
+   "height": "32px",
+
+   "background": "#0063FF",
+
+   "transition-property": "width,height,background",
+
+   "transition-duration": "0.5s"
+
+  });
+
+ }); // Mouseout
+
+
+</script><script>
+
+document.querySelectorAll('#doz_footer_wrap .footer-company-info__item').forEach(el => {
+
+  if (/^(사업장주소|연락처):/.test(el.textContent.trim())) {
+
+    el.style.setProperty('display', 'none', 'important');
+
+  }
+
+});
+
 
 </script><script>
 
