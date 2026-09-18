@@ -6,12 +6,17 @@ export async function GET(
 ) {
   const path = params.path.join('/');
 
-  // Priority: thumbnails and uploads from vendor-cdn.imweb.me
+  // Determine the target URL
+  // Support thumbnails, uploads, and other static assets from imweb.me
   let targetUrl = '';
   if (path.startsWith('thumbnail/') || path.startsWith('upload/')) {
     targetUrl = `https://vendor-cdn.imweb.me/${path}`;
+  } else if (path.includes('static.imweb.me')) {
+     // Handle cases where path might include the domain
+     const cleanPath = path.replace('static.imweb.me/', '');
+     targetUrl = `https://static.imweb.me/${cleanPath}`;
   } else {
-    // Fallback to static.imweb.me for other assets
+    // Default to static.imweb.me
     targetUrl = `https://static.imweb.me/${path}`;
   }
 

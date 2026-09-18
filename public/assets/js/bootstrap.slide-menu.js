@@ -1,6 +1,5 @@
 var PC_SLIDE_MENU = {
 	slideNavToggle: function() {
-		var toggler = '.navbar-toggle';
 		var backdropToggle = '.slide-nav-backdrop';
 		var pagewrapper = 'body';
 		var navigationwrapper = '.navbar-header';
@@ -15,24 +14,26 @@ var PC_SLIDE_MENU = {
 			$('#pc_slide_menu').before('<div class="slide-nav-backdrop"></div>');
 		}
 
-		var selected = $('.navbar-main').hasClass('slide-active');
+		var selected = $('body').hasClass('slide-active');
+		// We want to toggle the state
+		var isOpening = !selected;
 
 		$('#pc_slide_menu').stop().animate({
-			right: selected ? menuneg : '0px'
+			right: isOpening ? '0px' : menuneg
 		});
 
 		$('#navbar-height-col').stop().animate({
-			right: selected ? slideneg : '0px'
+			right: isOpening ? '0px' : slideneg
 		});
 		$(pagewrapper).stop().animate({
-			right: selected ? '0px' : slidewidth
+			right: isOpening ? slidewidth : '0px'
 		});
 
 		$(navigationwrapper).stop().animate({
-			right: selected ? '0px' : slidewidth
+			right: isOpening ? slidewidth : '0px'
 		});
 
-		$(this).toggleClass('slide-active', !selected);
+		$('body').toggleClass('slide-active');
 		$('#pc_slide_menu').toggleClass('slide-active');
 
 		$('#page-content, .navbar, body, html, .navbar-header').toggleClass('slide-active');
@@ -43,11 +44,11 @@ $(document).ready(function () {
 	 $('#slide-nav.navbar-inverse').after($('<div class="inverse" id="navbar-height-col"></div>'));
 	 $('#slide-nav.navbar-default').after($('<div id="navbar-height-col"></div>'));
 
-	 $("#slide-nav-btn").on("click",  function (e) {
-	 PC_SLIDE_MENU.slideNavToggle.call(this);
+	 $(".pc-navbar-toggle, .icon_type_menu a").on("click",  function (e) {
+	 PC_SLIDE_MENU.slideNavToggle();
 	 });
 
 	 $("body").on("click", '.slide-nav-backdrop', function (e) {
-	 PC_SLIDE_MENU.slideNavToggle.call(this);
+	 PC_SLIDE_MENU.slideNavToggle();
 	 });
 });
