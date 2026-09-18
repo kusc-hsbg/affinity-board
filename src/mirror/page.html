@@ -8825,7 +8825,7 @@ body > .section_wrap { display: none !important; }
 	<div id="padding_w20250621cd50a767dd88c" style="width:100%; min-height:1px; height:30px; "></div>
 </div>
 </div></div></div></div><div doz_type="row" doz_grid="12" doz_flexible="N" class="doz_row korean-text"><div doz_type="grid" doz_grid="12" doz_flexible="N" class="col-dz col-dz-12 korean-text"><div doz_type="widget" id="w20250621fe1498da4ac64" class="korean-text"><div class="_widget_data animated wg_animated korean-text" data-widget-name="텍스트" data-widget-type="text" data-widget-anim="fadeInUp" data-widget-anim-duration="0.7" data-widget-anim-delay="0" data-widget-parent-is-mobile="N" style="visibility: hidden; animation-duration: 0.7s; animation-delay: 0s;">	<div doz_type="text" class="widget _text_wrap widget_text_wrap fr-view default_padding korean-text" id="text_w20250621fe1498da4ac64">
-		<div class="text-table korean-text"><div class="korean-text"><h1 style="text-align: center;" class="korean-text">최준원</h1></div></div>
+		<div class="text-table korean-text"><div class="korean-text"><h1 style="text-align: center;" class="korean-text" id="_student_name"></h1></div></div>
 	</div>
 	
 </div></div></div></div></div><div doz_type="inside" class="inside korean-text"><div doz_type="row" doz_grid="12" doz_flexible="N" class="doz_row"><div doz_type="grid" doz_grid="12" doz_flexible="N" class="col-dz col-dz-12"><div doz_type="widget" id="w202506218d48f1216fc27"><div class="_widget_data _ds_animated_except" data-widget-name="여백" data-widget-type="padding" data-widget-parent-is-mobile="N"><div class="widget padding" data-height="60" style="margin-top:px; margin-bottom:px;">
@@ -10405,6 +10405,8 @@ body > .section_wrap { display: none !important; }
   // 게시판 데이터 렌더링
   function applyBoard(data) {
     reveal();
+    var _sn = document.getElementById("_student_name");
+    if (_sn) _sn.textContent = (data && data.studentName) ? data.studentName : "";
     renderGallery(data && data.items ? data.items : []);
     renderPosts(data && data.posts ? data.posts : []);
     showPopups();
