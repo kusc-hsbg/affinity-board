@@ -6,17 +6,10 @@ export async function GET(
 ) {
   const path = params.path.join('/');
 
-  // Determine the target URL
-  // Support thumbnails, uploads, and other static assets from imweb.me
   let targetUrl = '';
   if (path.startsWith('thumbnail/') || path.startsWith('upload/')) {
     targetUrl = `https://vendor-cdn.imweb.me/${path}`;
-  } else if (path.includes('static.imweb.me')) {
-     // Handle cases where path might include the domain
-     const cleanPath = path.replace('static.imweb.me/', '');
-     targetUrl = `https://static.imweb.me/${cleanPath}`;
   } else {
-    // Default to static.imweb.me
     targetUrl = `https://static.imweb.me/${path}`;
   }
 
@@ -26,6 +19,11 @@ export async function GET(
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Referer': 'https://affinityuniverse.com/',
         'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Sec-Fetch-Dest': 'image',
+        'Sec-Fetch-Mode': 'no-cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'Cache-Control': 'no-cache',
       },
     });
 
