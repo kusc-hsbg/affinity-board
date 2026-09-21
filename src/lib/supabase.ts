@@ -42,8 +42,24 @@ function normalizeImageUrl(url: string): string {
   return url;
 }
 
+// 본문 HTML의 <img src> URL을 normalizeImageUrl로 일괄 변환
+function normalizeBodyImages(body: string): string {
+  return body.replace(
+    /(<img\b[^>]*\bsrc=")([^"]+)(")/gi,
+    (_m, a, url, c) => a + normalizeImageUrl(url) + c
+  );
+}
+
 function dbConfigured(): boolean {
   return Boolean(supabase);
+}
+
+// 편집(글쓰기/수정/삭제) 전용 마스터 비밀번호. 서버에서만 사용.
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Jesus5000^^";
+
+// 마스터 비밀번호 검증 (편집 권한)
+export function verifyAdmin(password: string): boolean {
+  return typeof password === "string" && password === ADMIN_PASSWORD;
 }
 
 // 비밀번호 검증: students 테이블 우선, DB 미설정 시 URL 규칙(user_XXXX → XXXX) 대체
@@ -102,14 +118,22 @@ export async function getBoardData(slug: string): Promise<BoardData> {
   ]);
 
   if (postsRes && !postsRes.error && postsRes.data) {
-    data.posts = postsRes.data.map((p) => ({
-      id: p.id,
-      category: (p.category ?? "").trim(),
-      title: (p.title ?? "").trim(),
-      body: p.body ?? "",
-      thumbUrl: (p.thumb_url ?? "").trim(),
-      date: fmtDate(p.created_at),
-    }));
+    data.posts = postsRes.data.map((p) => {
+      const body = normalizeBodyImages(p.body ?? "");
+      let thumbUrl = normalizeImageUrl((p.thumb_url ?? "").trim());
+      if (!thumbUrl) {
+        const m = body.match(/<img\b[^>]*\bsrc="([^"]+)"/i);
+        if (m) thumbUrl = m[1];
+      }
+      return {
+        id: p.id,
+        category: (p.category ?? "").trim(),
+        title: (p.title ?? "").trim(),
+        body,
+        thumbUrl,
+        date: fmtDate(p.created_at),
+      };
+    });
   }
 
   if (studentRes.data) data.studentName = (studentRes.data.name ?? "").trim();

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, uploadImage } from "@/lib/supabase";
+import { verifyAdmin, uploadImage } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     if (!/^user_[A-Za-z0-9]+$/.test(slug)) {
       return NextResponse.json({ ok: false, message: "잘못된 접근입니다." }, { status: 400 });
     }
-    const auth = await verifyStudent(slug, password);
+    const auth = { ok: verifyAdmin(password) };
     if (!auth.ok) {
       return NextResponse.json({ ok: false, message: "비밀번호가 일치하지 않습니다." }, { status: 401 });
     }

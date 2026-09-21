@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyStudent, addGalleryItem, deleteGalleryItem, uploadImage, getBoardData } from "@/lib/supabase";
+import { verifyAdmin, addGalleryItem, deleteGalleryItem, uploadImage, getBoardData } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ export async function DELETE(req: NextRequest) {
   if (!/^user_[A-Za-z0-9]+$/.test(slug) || !id) {
     return NextResponse.json({ ok: false, message: "잘못된 접근입니다." }, { status: 400 });
   }
-  const auth = await verifyStudent(slug, password);
+  const auth = { ok: verifyAdmin(password) };
   if (!auth.ok) {
     return NextResponse.json({ ok: false, message: "비밀번호가 일치하지 않습니다." }, { status: 401 });
   }
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 비밀번호 재검증 (아무나 업로드 못 하도록)
-    const auth = await verifyStudent(slug, password);
+    const auth = { ok: verifyAdmin(password) };
     if (!auth.ok) {
       return NextResponse.json({ ok: false, message: "비밀번호가 일치하지 않습니다." }, { status: 401 });
     }
