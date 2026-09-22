@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'Plipop-Social-Icons';
-	src:  url('../fonts/Plipop-Social-Icons.eot?xgz9qy');
-	src:  url('../fonts/Plipop-Social-Icons.eot?xgz9qy#iefix') format('embedded-opentype'),
-	url('../fonts/Plipop-Social-Icons.ttf?xgz9qy') format('truetype'),
-	url('../fonts/Plipop-Social-Icons.woff?xgz9qy') format('woff'),
-	url('../fonts/Plipop-Social-Icons.svg?xgz9qy#Plipop-Social-Icons') format('svg');
+	src:  url(/vendor/vendor-cdn.imweb.me/fonts/Plipop-Social-Icons.eot);
+	src:  url(/vendor/vendor-cdn.imweb.me/fonts/Plipop-Social-Icons.eot) format('embedded-opentype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/Plipop-Social-Icons.ttf) format('truetype'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/Plipop-Social-Icons.woff) format('woff'),
+	url(/vendor/vendor-cdn.imweb.me/fonts/Plipop-Social-Icons.svg) format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

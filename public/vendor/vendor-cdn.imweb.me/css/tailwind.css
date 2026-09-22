@@ -3120,16 +3120,16 @@
   --tw-bg-opacity: 0.1;
 }
 .tw-bg-\[url\(\'\.\.\/images\/main\/price\/free_new_bg\.png\'\)\] {
-  background-image: url('../images/main/price/free_new_bg.png');
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/main/price/free_new_bg.png);
 }
 .tw-bg-\[url\(\'\.\.\/images\/main\/price\/pro_new_bg\.png\'\)\] {
-  background-image: url('../images/main/price/pro_new_bg.png');
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/main/price/pro_new_bg.png);
 }
 .tw-bg-\[url\(\'\.\.\/images\/main\/price\/starter_new_bg\.png\'\)\] {
-  background-image: url('../images/main/price/starter_new_bg.png');
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/main/price/starter_new_bg.png);
 }
 .tw-bg-\[url\(\.\.\/images\/main\/price\/global_new_bg\.png\)\] {
-  background-image: url(../images/main/price/global_new_bg.png);
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/main/price/global_new_bg.png);
 }
 .tw-bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
@@ -5221,7 +5221,7 @@
 
 .after\:tw-bg-\[url\(\'\.\.\/images\/admin\/shopping\/dropdown_arrow\.png\'\)\]::after {
   content: var(--tw-content);
-  background-image: url('../images/admin/shopping/dropdown_arrow.png');
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/admin/shopping/dropdown_arrow.png);
 }
 
 .after\:tw-bg-contain::after {

@@ -335,7 +335,7 @@ select::-ms-expand {
 .preview-tools a.btn-publish[data-state='loading'] > span:before {
   content: ' ';
   display: inline-block;
-  background: url(../../images/admin/design/ico_spinner.png) no-repeat center center;
+  background: url(/vendor/vendor-cdn.imweb.me/images/admin/design/ico_spinner.png) no-repeat center center;
   background-size: contain;
   width: 16px;
   height: 16px;
@@ -2184,7 +2184,7 @@ a.btn.profile.no-padding {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
-	background: url("../../images/site/nav-logout-off.png?1215745") no-repeat center;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/nav-logout-off.png) no-repeat center;
 	background-size: 100% auto;
 	position: absolute;
 	right: 0;
@@ -2192,7 +2192,7 @@ a.btn.profile.no-padding {
 	cursor: pointer
 }
 .profile-area .btn-group .btn.logout .logout-img:hover {
-	background: url("../../images/site/nav-logout.png?4844563") no-repeat center;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/nav-logout.png) no-repeat center;
 	background-size: 100% auto;
 }
 .profile-area .btn.profile {
@@ -4072,7 +4072,7 @@ td.use_sub_name>a>.plain_name {
 }
 .widget_add_icon {
 	display: inline-block;
-	background: url("../../images/site/widget_add_icon.png?4184187") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/widget_add_icon.png) no-repeat;
 	background-size: 360px auto;
 	width: 44px;
 	height: 44px;
@@ -4419,7 +4419,7 @@ select.form-control::-ms-expand {
 	display: table;
 	width: 46px;
 	height: 62px;
-	background: url("../../images/site/file_icon.png?212348") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/file_icon.png) no-repeat;
 	float: left;
 	text-align: center;
 	color: #bdbdbd;
@@ -5329,7 +5329,7 @@ main > .doz_row .gallery2 {
 }
 .video_play_btn {
 	position: absolute;
-	background: url("../../images/common/play_icon.png");
+	background: url(/vendor/vendor-cdn.imweb.me/images/common/play_icon.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 	z-index: 1;
@@ -6230,7 +6230,7 @@ main > .doz_row .gallery2 {
 	display: block;
 	width: 68px;
 	height: 80px;
-	background: url("../../images/site/social_icon3.png") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/social_icon3.png) no-repeat;
 	background-size: 56px;
 	padding-top: 63px;
 }
@@ -6579,7 +6579,7 @@ main > .doz_row .gallery2 {
 	display: inline-block;
 	width: 28px;
 	height: 28px;
-	background: url("../../images/site/social_icon.png") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/social_icon.png) no-repeat;
 	opacity: 1 !important;
 	position: absolute;
 	left: 24px;
@@ -8204,7 +8204,7 @@ article.modal_article .btn-primary{
 	transform: translateY(-50%);
 	left: 0;
 	content: "";
-	background-image: url("../../images/site/ico_confirm.png");
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/site/ico_confirm.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: inline-block;
@@ -8346,7 +8346,7 @@ article.login .zmdi.zmdi-square-o {
 }
 .profile_img .profile_img_icon {
 	display: inline-block;
-	background: url("../../images/site/profile_icon.png?484465") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/profile_icon.png) no-repeat;
 	background-size: 68px auto;
 	width: 68px;
 	height: 83px;
@@ -8965,7 +8965,7 @@ article.help.top_tail:after {
 }
 .favor.btn .icon {
 	display: inline-block;
-	background: url("../../images/site/btn_widget_icon.png?484513") no-repeat;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/btn_widget_icon.png) no-repeat;
 	background-size: 25px auto;
 }
 .favor.btn .txt {
@@ -9104,7 +9104,7 @@ article.help.top_tail:after {
 	-ms-filter: grayscale(100%);
 	-o-filter: grayscale(100%);
 	filter: grayscale(100%);
-	filter:url(/common/img/filters.svg#grayscale);
+	filter:url(/vendor/vendor-cdn.imweb.me/common/img/filters.svg);
 	filter: gray;
 	-webkit-filter: grayscale(1);
 }
@@ -10805,7 +10805,7 @@ div[doz_type="text"] table.tableHeaderDarken > thead > tr > th,
 }
 .message_panel .none_img {
 	display: inline-block;
-	background: url("../../images/site/img_empty_state.png?44848487") no-repeat center top;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/img_empty_state.png) no-repeat center top;
 	width: 132px;
 	height: 132px;
 }
@@ -11004,7 +11004,7 @@ body.offcanvas-expanded {
 }
 .logo_icon {
 	display: inline-block;
-	background: rgba(0, 0, 0, 0) url("../../images/site/logo_doznut.png?4154568") no-repeat scroll 0 0 / 39px auto;
+	background: rgba(0, 0, 0, 0) url(/vendor/vendor-cdn.imweb.me/images/site/logo_doznut.png) no-repeat scroll 0 0 / 39px auto;
 	font-size: 20px;
 	line-height: 42px;
 	padding: 0 0 0 40px;
@@ -11027,7 +11027,7 @@ body.offcanvas-expanded {
 	display: inline-block;
 	width: 222px;
 	height: 185px;
-	background: url("../../images/site/traffic.png?12312312") no-repeat center;
+	background: url(/vendor/vendor-cdn.imweb.me/images/site/traffic.png) no-repeat center;
 	background-size: 100% auto;
 	margin-left: -30px;
 }
@@ -11525,7 +11525,7 @@ button.btn-flat, .btn-flat {
 	height:16px;
 	width:16px;
 	line-height:16px;
-	background:url("../../images/site/round-check-off.png?87878942") no-repeat;
+	background:url(/vendor/vendor-cdn.imweb.me/images/site/round-check-off.png) no-repeat;
 	background-size:16px;
 }
 .round-check.checkbox-styled:not(ie8) input:checked ~ span:before{
@@ -11534,7 +11534,7 @@ button.btn-flat, .btn-flat {
 	border-radius:50%;
 	width:16px;
 	line-height:16px;
-	background:url("../../images/site/round-check-on.png?48478753") no-repeat;
+	background:url(/vendor/vendor-cdn.imweb.me/images/site/round-check-on.png) no-repeat;
 	background-size:16px;
 }
 .fr-video:after {

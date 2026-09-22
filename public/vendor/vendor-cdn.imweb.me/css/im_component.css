@@ -45,7 +45,7 @@
 .im-sheet .im-sheet-select li.selected:after {
 	position: absolute;
 	content: '';
-	background-image: url("../images/icon-check.svg");
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/icon-check.svg);
 	background-size: contain;
 	width: 10px;
 	height: 10px;

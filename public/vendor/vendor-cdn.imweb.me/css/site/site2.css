@@ -1998,7 +1998,6 @@ select.form-control option {
 .opt_product_area .area_tit {
 	padding-right: 25px;
 	text-align: left !important;
-	word-break: break-all;
 }
 .opt_product_area .area_tit:before,
 .order_quantity_area .area_tit:before {
@@ -2121,7 +2120,7 @@ select.form-control option {
 	height: 48px !important;
 	border-color: #00DE5A !important;
 	background-color: #00DE5A !important;
-	background-image: url("../../images/pc_btn_npay.svg") !important;
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_btn_npay.svg) !important;
 	background-repeat: no-repeat;
 	background-size: auto 17px !important;
 	background-position: center center !important;
@@ -2159,7 +2158,7 @@ select.form-control option {
 .social-pay #naverPayWrap .npay_storebtn_bx .npay_btn_talk{
   width: 48px !important;
   height: 48px !important;
-  background-image: url("../../images/pc_npay_talk.png") !important;
+  background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_npay_talk.png) !important;
   background-size: 20px 20px !important;
   background-repeat: no-repeat;
   background-color: #fff !important;
@@ -2195,7 +2194,7 @@ select.form-control option {
 }
 .social-pay #checkoutContainer.__checkout_buy_container .__checkout_img_buy{
 	width: 100% !important;
-	background-image: url("../../images/pc_btn_talkcheckout.svg") !important;
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_btn_talkcheckout.svg) !important;
 	background-repeat: no-repeat;
 	background-size: 70px auto !important;
 	height: 18px;
@@ -2204,7 +2203,7 @@ select.form-control option {
 .social-pay #checkoutContainer.__checkout_sdk_container .__checkout_img_wish{
 	width: 100% !important;
 	height: 100% !important;
-	background: url("../../images/pc_kakaopay_wish.png") no-repeat !important;
+	background: url(/vendor/vendor-cdn.imweb.me/images/pc_kakaopay_wish.png) no-repeat !important;
 	background-size: 12px 14px !important;
 	background-position: center !important;
 }
@@ -2251,7 +2250,7 @@ select.form-control option {
 .social-pay #checkoutContainer .__checkout_sdk_container .__checkout_img_channel, .social-pay #checkoutContainer.__checkout_sdk_container .__checkout_img_channel {
   width: 24px;
   height: 17px;
-    background-image: url("../../images/logo_kakao_channel.png") !important;
+    background-image: url(/vendor/vendor-cdn.imweb.me/images/logo_kakao_channel.png) !important;
     background-size: 24px 17px !important;
     background-position: center;
 }
@@ -2299,11 +2298,11 @@ select.form-control option {
 	box-sizing: border-box !important;
 }
 .pay-box .social-pay #naverPayWrap .npay_storebtn_bx .npay_btn_pay{
-	background-image: url("../../images/pc_btn_npay.svg") !important;
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_btn_npay.svg) !important;
 	background-size: auto 17px !important;
 }
 .pay-box .social-pay #checkoutContainer.__checkout_buy_container .__checkout_img_buy{
-	background-image: url("../../images/pc_btn_talkcheckout.svg") !important;
+	background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_btn_talkcheckout.svg) !important;
 	background-size: 70px auto !important;
     height: 23px;
 }
@@ -11943,7 +11942,7 @@ a[data-toggle="popover"]:focus {
 	#prod_additional_sheet .btn_clse {
 		display: inline-block;
 		text-align: center;
-		background: url(../../images/site/m_option_close_btn.png) no-repeat center center;
+		background: url(/vendor/vendor-cdn.imweb.me/images/site/m_option_close_btn.png) no-repeat center center;
 		background-size: 41px 10px;
 		padding: 4px;
 		width: 100%;
@@ -12213,7 +12212,7 @@ a[data-toggle="popover"]:focus {
 		height: 48px !important;
 		border-color: #00DE5A !important;
 		background-color: #00DE5A !important;
-		background-image: url("../../images/m_btn_npay.svg") !important;
+		background-image: url(/vendor/vendor-cdn.imweb.me/images/m_btn_npay.svg) !important;
 		background-repeat: no-repeat;
 		background-size: 105px 18px !important;
 		background-position: center center !important;
@@ -12231,7 +12230,7 @@ a[data-toggle="popover"]:focus {
 	}
 	.social-pay #checkoutContainer.__checkout_buy_container .__checkout_img_buy{
 		width: 100%;
-		background-image: url("https://vendor-cdn.imweb.me/images/kakao_payment_logo.svg") !important;
+		background-image: url(/vendor/vendor-cdn.imweb.me/images/kakao_payment_logo.svg) !important;
 		background-repeat: no-repeat;
 		background-size: auto 18px !important;
         height: 19px;
@@ -12269,7 +12268,7 @@ a[data-toggle="popover"]:focus {
 	}
 	.pay-box .social-pay #naverPayWrap .npay_storebtn_bx .npay_btn_pay{
 		width: 100% !important;
-		background-image: url("../../images/m_btn_npay.svg") !important;
+		background-image: url(/vendor/vendor-cdn.imweb.me/images/m_btn_npay.svg) !important;
 		background-size: 105px 18px !important;
 		font-size: 0px !important;
 	}
@@ -12281,10 +12280,10 @@ a[data-toggle="popover"]:focus {
 	}
 	.social-pay #naverPayWrap .npay_storebtn_bx .npay_btn_pay .npay_logo,
 	.pay-box .social-pay #naverPayWrap .npay_storebtn_bx .npay_btn_pay .npay_logo{
-		background-image: url('') !important;
+		background-image: url(/vendor/vendor-cdn.imweb.me/css/site/site2.css) !important;
 	}
 	.pay-box .social-pay #checkoutContainer.__checkout_buy_container .__checkout_img_buy{
-		background-image: url("../../images/pc_btn_talkcheckout.svg") !important;
+		background-image: url(/vendor/vendor-cdn.imweb.me/images/pc_btn_talkcheckout.svg) !important;
 		background-size: auto 18px !important;
 	}
   .social-pay #checkoutContainer .__checkout_buy_container .__checkout_buy_contents .__checkout_txt_channel_tooltip, .social-pay #checkoutContainer.__checkout_buy_container .__checkout_buy_contents .__checkout_txt_channel_tooltip {

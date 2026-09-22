@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'im-icon';
-  src:  url('fonts/im-icon.eot?ia6jbo');
-  src:  url('fonts/im-icon.eot?ia6jbo#iefix') format('embedded-opentype'),
-    url('fonts/im-icon.ttf?ia6jbo') format('truetype'),
-    url('fonts/im-icon.woff?ia6jbo') format('woff'),
-    url('fonts/im-icon.svg?ia6jbo#im-icon') format('svg');
+  src:  url(/vendor/vendor-cdn.imweb.me/fonts/im-icon/fonts/im-icon.eot);
+  src:  url(/vendor/vendor-cdn.imweb.me/fonts/im-icon/fonts/im-icon.eot) format('embedded-opentype'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/im-icon/fonts/im-icon.ttf) format('truetype'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/im-icon/fonts/im-icon.woff) format('woff'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/im-icon/fonts/im-icon.svg) format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;

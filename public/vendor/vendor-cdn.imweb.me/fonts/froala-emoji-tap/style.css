@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'froala-emoji-tap';
-  src:  url('fonts/froala-emoji-tap.eot?oojeml');
-  src:  url('fonts/froala-emoji-tap.eot?oojeml#iefix') format('embedded-opentype'),
-    url('fonts/froala-emoji-tap.ttf?oojeml') format('truetype'),
-    url('fonts/froala-emoji-tap.woff?oojeml') format('woff'),
-    url('fonts/froala-emoji-tap.svg?oojeml#froala-emoji-tap') format('svg');
+  src:  url(/vendor/vendor-cdn.imweb.me/fonts/froala-emoji-tap/fonts/froala-emoji-tap.eot);
+  src:  url(/vendor/vendor-cdn.imweb.me/fonts/froala-emoji-tap/fonts/froala-emoji-tap.eot) format('embedded-opentype'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/froala-emoji-tap/fonts/froala-emoji-tap.ttf) format('truetype'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/froala-emoji-tap/fonts/froala-emoji-tap.woff) format('woff'),
+    url(/vendor/vendor-cdn.imweb.me/fonts/froala-emoji-tap/fonts/froala-emoji-tap.svg) format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;

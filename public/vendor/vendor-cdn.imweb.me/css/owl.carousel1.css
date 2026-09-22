@@ -61,7 +61,7 @@
 
 /* mouse grab icon */
 .grabbing {
-	cursor : url(grabbing.png) 8 8, move;
+	cursor : url(/vendor/vendor-cdn.imweb.me/css/grabbing.png) 8 8, move;
 }
 
 /* fix */
